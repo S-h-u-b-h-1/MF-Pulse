@@ -5,13 +5,7 @@ import WatchButton from "../../components/WatchButton";
 import trendData from "../../data/amc_trend.json";
 
 const fmt = (n) => new Intl.NumberFormat("en-IN").format(n);
-const CLASS_COLOR = {
-  Equity: "#22c55e",
-  Debt: "#3b82f6",
-  Hybrid: "#a855f7",
-  Other: "#f59e0b",
-  Solution: "#ec4899",
-};
+const CLASS_COLOR = { Equity: "#34d399", Debt: "#60a5fa", Hybrid: "#a78bfa", Other: "#fbbf24", Solution: "#f472b6" };
 
 export async function generateMetadata({ params }) {
   return { title: `${decodeURIComponent(params.amc)} — MF Pulse` };
@@ -45,35 +39,37 @@ export default async function AmcPage({ params }) {
   return (
     <main>
       <Tracker event="amc_view" payload={{ amc }} />
-      <header className="top">
-        <a className="back" href="/">← MF Pulse</a>
-        <div className="live">{fmt(total)} schemes</div>
+      <header className="site-head">
+        <div className="brand"><a href="/"><span className="pulse-dot" /> MF Pulse</a></div>
+        <a className="back" href="/">← Dashboard</a>
       </header>
 
       <h1 className="amc-title">{amc}</h1>
+      <div className="amc-sub">{fmt(total)} schemes tracked · live AMFI NAVs</div>
 
       {trendData.amcs[amc] && (
-        <section className="panel">
-          <h2>30-day equity index · normalised to 100 · real AMFI NAV history</h2>
-          <Sparkline points={trendData.amcs[amc]} />
+        <section className="section">
+          <div className="section-head"><h2>30-day equity index · normalised to 100</h2><span className="eyebrow">real AMFI history</span></div>
+          <div className="panel"><Sparkline points={trendData.amcs[amc]} /></div>
         </section>
       )}
 
-      <section className="panel">
-        <h2>Schemes by asset class</h2>
+      <section className="section">
+        <div className="section-head"><h2>Schemes by asset class</h2></div>
         <div className="chips">
           {summary.map((r) => (
             <span className="chip" key={r.asset_class}>
               <span className="cls-dot" style={{ background: CLASS_COLOR[r.asset_class] || "#64748b" }} />
               {r.asset_class}
-              <b>{fmt(r.schemes)}</b>
+              <b style={{ color: "var(--muted)" }}>{fmt(r.schemes)}</b>
             </span>
           ))}
         </div>
       </section>
 
-      <section className="panel">
-        <h2>Equity schemes · latest NAV</h2>
+      <section className="section">
+        <div className="section-head"><h2>Equity schemes · latest NAV</h2></div>
+        <div className="panel" style={{ padding: "8px 14px" }}>
         <table className="nav-table">
           <thead>
             <tr><th className="w-col"></th><th>Scheme</th><th className="num">NAV (₹)</th><th className="num">As of</th></tr>
@@ -93,6 +89,7 @@ export default async function AmcPage({ params }) {
           </tbody>
         </table>
         {schemes.length === 40 && <p className="more">Showing first 40 equity schemes.</p>}
+        </div>
       </section>
 
       <footer className="foot">
