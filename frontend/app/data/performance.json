@@ -1,0 +1,363 @@
+{
+"window": [
+"24-May-2026",
+"23-Jun-2026"
+],
+"asOf": "2026-06-23",
+"universe": 1175,
+"source": "AMFI NAV history \u00b7 equity Direct/Growth plans \u00b7 30-day NAV return",
+"top": [
+{
+"code": "153258",
+"name": "Motilal Oswal Innovation Opportunities Fund - Direct Plan- Growth",
+"amc": "Motilal Oswal",
+"ret": 9.23,
+"nav": 14.2
+},
+{
+"code": "153256",
+"name": "Motilal Oswal Innovation Opportunities Fund- Regular Plan- Growth",
+"amc": "Motilal Oswal",
+"ret": 9.11,
+"nav": 13.94
+},
+{
+"code": "152237",
+"name": "Motilal Oswal Small Cap Fund - Direct - Growth",
+"amc": "Motilal Oswal",
+"ret": 8.47,
+"nav": 16.49
+},
+{
+"code": "152232",
+"name": "Motilal Oswal Small Cap Fund - Regular - Growth",
+"amc": "Motilal Oswal",
+"ret": 8.37,
+"nav": 15.95
+},
+{
+"code": "142388",
+"name": "Edelweiss Recently Listed IPO Fund Direct Plan Growth",
+"amc": "Edelweiss",
+"ret": 8.15,
+"nav": 33.52
+},
+{
+"code": "142383",
+"name": "Edelweiss Recently Listed IPO Fund Regular Plan Growth",
+"amc": "Edelweiss",
+"ret": 8.05,
+"nav": 30.94
+},
+{
+"code": "153364",
+"name": "Motilal Oswal Active Momentum Fund- Direct-Growth",
+"amc": "Motilal Oswal",
+"ret": 7.9,
+"nav": 13.83
+},
+{
+"code": "153365",
+"name": "Motilal Oswal Active Momentum Fund- Regular- Growth",
+"amc": "Motilal Oswal",
+"ret": 7.89,
+"nav": 13.81
+},
+{
+"code": "153912",
+"name": "Helios Small Cap Fund - Direct Plan - Growth Option",
+"amc": "Helios",
+"ret": 7.88,
+"nav": 11.09
+},
+{
+"code": "154215",
+"name": "Abakkus Small Cap Fund - Direct Plan - Growth",
+"amc": "Abakkus",
+"ret": 7.85,
+"nav": 12.07
+},
+{
+"code": "153909",
+"name": "Helios Small Cap Fund - Regular Plan - Growth Option",
+"amc": "Helios",
+"ret": 7.84,
+"nav": 11.0
+},
+{
+"code": "145678",
+"name": "BANK OF INDIA Small Cap Fund Direct Plan Growth",
+"amc": "Bank of India",
+"ret": 7.76,
+"nav": 60.96
+},
+{
+"code": "154214",
+"name": "Abakkus Small Cap Fund - Regular  Plan - Growth",
+"amc": "Abakkus",
+"ret": 7.73,
+"nav": 12.02
+},
+{
+"code": "145677",
+"name": "BANK OF INDIA Small Cap Fund Regular Plan Growth",
+"amc": "Bank of India",
+"ret": 7.62,
+"nav": 53.93
+},
+{
+"code": "152614",
+"name": "JM Small Cap Fund (Direct) - Growth Option",
+"amc": "JM Financial",
+"ret": 7.4,
+"nav": 11.49
+},
+{
+"code": "145137",
+"name": "Invesco India Smallcap Fund - Direct Plan - Growth",
+"amc": "Invesco",
+"ret": 7.37,
+"nav": 51.58
+},
+{
+"code": "152612",
+"name": "JM Small Cap Fund (Regular) - Growth Option",
+"amc": "JM Financial",
+"ret": 7.27,
+"nav": 11.11
+},
+{
+"code": "145139",
+"name": "Invesco India Smallcap Fund - Regular Plan - Growth",
+"amc": "Invesco",
+"ret": 7.25,
+"nav": 45.99
+},
+{
+"code": "153612",
+"name": "BAJAJ FINSERV SMALL CAP FUND - DIRECT - GROWTH",
+"amc": "Bajaj Finserv",
+"ret": 7.05,
+"nav": 10.87
+},
+{
+"code": "153900",
+"name": "Invesco India Consumption Fund - Direct Plan - Growth",
+"amc": "Invesco",
+"ret": 6.94,
+"nav": 10.32
+},
+{
+"code": "153609",
+"name": "BAJAJ FINSERV SMALL CAP FUND - REGULAR - GROWTH",
+"amc": "Bajaj Finserv",
+"ret": 6.93,
+"nav": 10.71
+},
+{
+"code": "153902",
+"name": "Invesco India Consumption Fund - Regular Plan - Growth Plan",
+"amc": "Invesco",
+"ret": 6.9,
+"nav": 10.22
+},
+{
+"code": "147919",
+"name": "ITI Small Cap Fund - Direct Plan - Growth Option",
+"amc": "ITI",
+"ret": 6.71,
+"nav": 35.88
+},
+{
+"code": "147920",
+"name": "ITI Small Cap Fund - Regular Plan - Growth Option",
+"amc": "ITI",
+"ret": 6.59,
+"nav": 31.88
+},
+{
+"code": "152939",
+"name": "TRUSTMF SMALL CAP FUND -DIRECT PLAN-GROWTH",
+"amc": "Trust",
+"ret": 6.32,
+"nav": 12.95
+}
+],
+"bottom": [
+{
+"code": "108202",
+"name": "DSP Natural Resources And New Energy Fund - Regular - Growth",
+"amc": "DSP",
+"ret": -3.67,
+"nav": 108.28
+},
+{
+"code": "120577",
+"name": "SBI TECHNOLOGY OPPORTUNITIES FUND - REGULAR PLAN - GROWTH",
+"amc": "SBI",
+"ret": -3.63,
+"nav": 180.23
+},
+{
+"code": "119028",
+"name": "DSP Natural Resources and New Energy Fund - Direct Plan - Growth",
+"amc": "DSP",
+"ret": -3.59,
+"nav": 121.75
+},
+{
+"code": "120578",
+"name": "SBI TECHNOLOGY OPPORTUNITIES FUND - DIRECT PLAN - GROWTH",
+"amc": "SBI",
+"ret": -3.55,
+"nav": 207.18
+},
+{
+"code": "147661",
+"name": "ICICI Prudential Commodities Fund - Growth Option",
+"amc": "ICICI Prudential",
+"ret": -3.38,
+"nav": 46.6
+},
+{
+"code": "147662",
+"name": "ICICI Prudential Commodities Fund - Direct Plan - Growth Option",
+"amc": "ICICI Prudential",
+"ret": -3.33,
+"nav": 50.77
+},
+{
+"code": "103168",
+"name": "Aditya Birla Sun Life Digital India Fund - Growth - Regular Plan",
+"amc": "Aditya Birla Sun Life",
+"ret": -3.31,
+"nav": 141.1
+},
+{
+"code": "120539",
+"name": "Aditya Birla Sun Life Digital India Fund - Growth - Direct Plan",
+"amc": "Aditya Birla Sun Life",
+"ret": -3.24,
+"nav": 160.32
+},
+{
+"code": "152058",
+"name": "HDFC Technology Fund - Growth Option",
+"amc": "HDFC",
+"ret": -3.23,
+"nav": 10.68
+},
+{
+"code": "152059",
+"name": "HDFC Technology Fund - Growth Option - Direct Plan",
+"amc": "HDFC",
+"ret": -3.14,
+"nav": 11.04
+},
+{
+"code": "152460",
+"name": "Kotak Technology Fund - Regular Plan - Growth Option",
+"amc": "Kotak Mahindra",
+"ret": -3.1,
+"nav": 9.39
+},
+{
+"code": "152462",
+"name": "Kotak Technology Fund - Direct Plan - Growth Option",
+"amc": "Kotak Mahindra",
+"ret": -3.0,
+"nav": 9.71
+},
+{
+"code": "100522",
+"name": "Franklin India Technology Fund-Growth",
+"amc": "Franklin Templeton",
+"ret": -2.97,
+"nav": 434.7
+},
+{
+"code": "118537",
+"name": "Franklin India Technology Fund - Direct - Growth",
+"amc": "Franklin Templeton",
+"ret": -2.9,
+"nav": 483.16
+},
+{
+"code": "103145",
+"name": "SBI COMMA Fund - REGULAR PLAN - Growth",
+"amc": "SBI",
+"ret": -2.8,
+"nav": 114.69
+},
+{
+"code": "100363",
+"name": "ICICI Prudential Technology Fund - Growth",
+"amc": "ICICI Prudential",
+"ret": -2.78,
+"nav": 165.79
+},
+{
+"code": "119705",
+"name": "SBI COMMA Fund - DIRECT PLAN - Growth",
+"amc": "SBI",
+"ret": -2.76,
+"nav": 124.82
+},
+{
+"code": "120594",
+"name": "ICICI Prudential Technology Fund - Direct Plan -  Growth",
+"amc": "ICICI Prudential",
+"ret": -2.73,
+"nav": 185.59
+},
+{
+"code": "135797",
+"name": "Tata Digital India Fund-Regular Plan-Growth",
+"amc": "Tata",
+"ret": -2.61,
+"nav": 38.19
+},
+{
+"code": "135800",
+"name": "Tata Digital India Fund-Direct Plan-Growth",
+"amc": "Tata",
+"ret": -2.52,
+"nav": 45.01
+},
+{
+"code": "100415",
+"name": "Tata Ethical Fund-Regular Plan - Growth Option",
+"amc": "Tata",
+"ret": -2.45,
+"nav": 353.01
+},
+{
+"code": "134922",
+"name": "Nippon India US Equity Opportunities Fund- Growth Plan- Growth Option",
+"amc": "Nippon India",
+"ret": -2.44,
+"nav": 38.92
+},
+{
+"code": "152692",
+"name": "Motilal Oswal Quant Fund - Regular - Growth",
+"amc": "Motilal Oswal",
+"ret": -2.44,
+"nav": 9.57
+},
+{
+"code": "152694",
+"name": "Motilal Oswal Quant Fund - Direct - Growth",
+"amc": "Motilal Oswal",
+"ret": -2.43,
+"nav": 10.14
+},
+{
+"code": "153667",
+"name": "Sundaram Multi-Factor Fund - Regular - Growth",
+"amc": "Sundaram",
+"ret": -2.39,
+"nav": 9.77
+}
+]
+}

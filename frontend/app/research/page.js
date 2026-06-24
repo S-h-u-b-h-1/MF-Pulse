@@ -8,10 +8,11 @@ export const metadata = { title: "Research Hub" };
 const GROUPS = [
   {
     eyebrow: "Reports",
-    title: "Briefings & signals",
+    title: "Briefings & rankings",
     items: [
-      { t: "Market Brief", d: "Monthly flow narrative auto-composed from the dataset — leaders, breadth, and standout moves.", href: "/brief", tag: "monthly" },
-      { t: "Flow Signals", d: "AMC × category net-flow surges flagged by z-score against trailing history.", href: "/signals", tag: "monthly" },
+      { t: "Fund Performance", d: "Real 30-day NAV returns for 1,175 equity funds — top performers and laggards. Direct AMFI calculation.", href: "/performance", tag: "real" },
+      { t: "Market Brief", d: "Monthly flow narrative auto-composed from the dataset — leaders, breadth, and standout moves.", href: "/brief", tag: "sample" },
+      { t: "Flow Signals", d: "AMC × category net-flow surges flagged by z-score against trailing history.", href: "/signals", tag: "sample" },
     ],
   },
   {

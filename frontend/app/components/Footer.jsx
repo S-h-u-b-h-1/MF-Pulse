@@ -10,6 +10,8 @@ export default function Footer({ note }) {
         <span>·</span>
         <a className="text-ink-muted hover:text-ink" href="/methodology">Methodology</a>
         <span>·</span>
+        <a className="text-ink-muted hover:text-ink" href="/data-quality">Data quality</a>
+        <span>·</span>
         <a className="text-ink-muted hover:text-ink" href="/data-status">Data status</a>
         <span>·</span>
         <a className="text-ink-muted hover:text-ink" href="https://github.com/S-h-u-b-h-1/MF-Pulse">Source</a>

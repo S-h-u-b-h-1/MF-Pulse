@@ -20,6 +20,7 @@ import SignalCard from "./components/ui/SignalCard";
 import PremiumButton from "./components/ui/PremiumButton";
 import Badge from "./components/ui/Badge";
 import trendData from "./data/amc_trend.json";
+import performance from "./data/performance.json";
 
 const fmt = (n) => new Intl.NumberFormat("en-IN").format(n);
 const inr = (n) => `${n >= 0 ? "+" : "−"}₹${fmt(Math.abs(Math.round(n)))} Cr`;
@@ -48,6 +49,11 @@ export default async function Page() {
   const moverCol = (label) => [
     { key: "name", label, render: (r) => <a className="text-ink hover:text-accent-soft" href={`/amc/${encodeURIComponent(r.amc)}`}>{r.name}</a> },
     { key: "change", label: "30d Δ", align: "right", render: (r) => <span className={r.change >= 0 ? "text-pos tnum" : "text-neg tnum"}>{r.change >= 0 ? "+" : ""}{r.change.toFixed(2)}</span> },
+  ];
+  const perfCols = [
+    { key: "rank", label: "#", muted: true, render: (r) => r._rank },
+    { key: "name", label: "Fund", render: (r) => <a className="text-ink hover:text-accent-soft" href={`/amc/${encodeURIComponent(r.amc + " Mutual Fund")}`}>{r.name.replace(/ - (Direct|Regular).*/i, "")}<span className="block text-[11px] text-ink-faint">{r.amc}</span></a> },
+    { key: "ret", label: "30d return", align: "right", render: (r) => <span className={r.ret >= 0 ? "text-pos tnum" : "text-neg tnum"}>{r.ret >= 0 ? "+" : ""}{r.ret.toFixed(2)}%</span> },
   ];
 
   // Per-AMC aggregation for leaderboard
@@ -90,13 +96,15 @@ export default async function Page() {
     .sort((a, b) => Math.abs(b.equity) + Math.abs(b.debt) - (Math.abs(a.equity) + Math.abs(a.debt)))
     .slice(0, 7);
 
+  // Hero strip leads with REAL, traceable metrics (no synthetic AUM/flows up top).
+  const topPerf = performance.top[0];
   const stats = [
-    { label: "Total AUM", value: lakhCr(flow.total_aum_cr ?? 0), sub: "sample" },
-    { label: "Equity net", value: inr(flow.equity_net_cr ?? 0), tone: "pos", sub: "sample" },
-    { label: "Debt net", value: inr(flow.debt_net_cr ?? 0), tone: "neg", sub: "sample" },
-    { label: "Active signals", value: signals.length, sub: "z ≥ 1.8" },
-    { label: "Schemes", value: fmt(totalSchemes), sub: "AMFI · daily" },
+    { label: "Schemes tracked", value: fmt(totalSchemes), sub: "AMFI · daily" },
     { label: "AMC houses", value: "51", sub: "AMFI" },
+    { label: "Top fund · 30d", value: `+${topPerf.ret.toFixed(1)}%`, tone: "pos", sub: topPerf.amc },
+    { label: "Market momentum", value: `${intel.avg >= 0 ? "+" : ""}${intel.avg.toFixed(2)}`, tone: intel.avg >= 0 ? "pos" : "neg", sub: "avg AMC 30d index" },
+    { label: "Latest NAV", value: latest, sub: "AMFI" },
+    { label: "Flow signals", value: signals.length, sub: "flows · sample" },
   ];
 
   return (
@@ -169,9 +177,15 @@ export default async function Page() {
           </div>
         </section>
 
-        {/* Heatmap */}
+        {/* Top performing funds — REAL AMFI NAV returns */}
         <section className="mt-9">
-          <SectionHeader eyebrow="6-month history · sample" title="Net equity-flow heatmap" />
+          <SectionHeader eyebrow="real 30-day NAV return · equity Direct/Growth" title="Top performing funds" action={<a className="hover:text-ink" href="/performance">All {performance.universe} →</a>} />
+          <DataTable columns={perfCols} rows={performance.top.slice(0, 6).map((r, i) => ({ ...r, _key: r.code, _rank: i + 1 }))} footnote="30-day NAV return, equity Direct/Growth plans. Source: AMFI NAV history." />
+        </section>
+
+        {/* Heatmap — clearly-labelled SAMPLE flow data (real flows pending SEBI export) */}
+        <section className="mt-9">
+          <SectionHeader eyebrow="illustrative sample · awaiting SEBI export" title="Net equity-flow heatmap" action={<Badge tone="warn">sample</Badge>} />
           <GlassPanel className="p-5 sm:p-6"><FlowHeatmap rows={flowHistory} assetClass="Equity" /></GlassPanel>
         </section>
 
