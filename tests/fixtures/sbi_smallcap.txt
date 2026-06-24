@@ -1,0 +1,241 @@
+21
+EQUITY-SMALL CAP FUND
+Option NAV ( ) `
+NET ASSET VALUE
+Record Date IDCW NAV ( ) `(in /Unit)`
+09-Mar-18 (Reg Plan) 9.10 33.3383
+09-Mar-18 (Dir Plan) 11.10 40.7137
+28-Aug-15 (Reg Plan) 3.60 23.5236
+28-Aug-15 (Dir Plan) 4.30 27.8630
+30-Jan-15 (Reg Plan) 4.00 26.0785
+LAST IDCW
+
+
+Long term capital appreciation
+Investment in equity and equity-related securities
+predominantly of small cap companies.
+SBI Small Cap Fund
+This product is suitable for investors who are seeking^:
+Face value: 10`
+Investment Objective
+Quantitative Data
+To provide investors with opportunities
+for long-term growth in capital along with
+the liquidity of an open-ended scheme by
+investing predominantly in a well
+diversified basket of equity stocks of
+small cap companies.
+Fund Details
+Standard Deviation
+Beta
+Sharpe Ratio
+Portfolio Turnover*
+#
+#
+#
+: 23.56%
+: 0.76
+: 0.93
+Equity Turnover : 0.11
+Total Turnover : 0.54
+Total Turnover = Equity + Debt + Derivatives
+#
+Source: CRISIL Fund Analyser
+*Portfolio Turnover = lower of total sale or total
+purchase for the last 12 months (including equity
+derivatives) upon Avg. AUM of trailing twelve months.
+Risk Free rate: FBIL Overnight Mibor rate (6.60% as on
+30th December 2022) Basis for Ratio Calculation: 3
+Years Monthly Data Points
+Ratios are computed using Total Return Index (TRI) as
+per SEBI Circular dated Jan 4, 2018
+PORTFOLIO CLASSIFICATION BY
+(%)ASSET ALLOCATION
+Pursuant to payment of IDCW, the NAV of IDCW Option of scheme/plans
+would fall to the extent of payout and statutory levy, if applicable.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Type of Scheme
+Date of Allotment:
+Report As On:
+AAUM for the December 2022
+AUM as on December 31, 2022
+Fund Manager:
+Managing Since:
+Total Experience:
+First Tier Benchmark:
+Exit Load:
+Entry Load:
+Plans Available:
+Options:
+SIP
+Minimum Investment and Additional
+Investment:
+An open-ended Equity Scheme predominantly
+investing in small cap stocks.
+09/09/2009
+31/12/2022
+15,417.19 Crores
+15,348.55 Crores
+Mr. R. Srinivasan & *Mr. Mohit Jain
+Mr. R. Srinivasan Nov - 2013
+Mr. Mohit Jain Nov - 2017
+Over 30 years
+S&P BSE 250 Small Cap Index TRI
+For exit within one year from the date
+of allotment -1%
+For exit after one year from the date of allotment
+– Nil
+N.A.
+Regular, Direct
+Growth, IDCW
+Fresh registration through SIP/STP-in on or after
+February 04, 2021 in the Scheme will be capped
+at 25,000 per month per PAN (first
+holder/guardian PAN) for daily, weekly, monthly
+and quarterly frequencies. The caps for various
+frequencies will be as under:
+Daily SIP/STP-in: 250,
+Weekly SIP/STP-in: 6,250,
+Monthly SIP/STP-in: 5,000,
+Quarterly SIP/STP-in: 75,000
+All other terms and conditions pertaining to
+SIPs/STPs remain unchanged under the Scheme.
+Kindly refer notice cum addendum dated February
+03, 2021 for further details.
+Fresh subscriptions through lumpsum investment
+(including additional investments / Switch in) in
+the Scheme is discontinued till further notice in
+terms of notice cum addendum dated September
+04, 2020.
+Month of
+`
+`
+`
+`1,
+`
+`2
+`
+PORTFOLIO CLASSIFICATION BY
+INDUSTRY ALLOCATION (%)
+PORTFOLIO
+^Investors should consult their financial advisers if in
+doubt about whether the product is suitable for them.
+(Previously known as SBI Small & Midcap Fund)
+Reg-Plan-IDCW 67.3610
+Reg-Plan-Growth                                           114.0211
+Dir-Plan-IDCW 86.9102
+Dir-Plan-Growth 127.3358
+Cash, Cash Equivalents, And Others
+Mid Cap Smallcap
+Capital Goods 19.36
+Consumer Durables 13.74
+Consumer Services 12.94
+Construction 7.78
+Chemicals 6.59
+Financial Services 5.37
+Fast Moving Consumer Goods 4.51
+Automobile And Auto Components 3.69
+Healthcare 2.25
+Media, Entertainment & Publication 2.06
+Construction Materials 1.82
+Services 1.69
+Realty 1.13
+Textiles 0.42
+Oil, Gas & Consumable Fuels 0.14
+Derivatives 8.30
+Cash, Cash Equivalents And Others 8.21
+Investors understand that their principal
+will be at Very High risk
+Non-convertible Preference SharesDerivatives
+Equity Shares
+Blue Star Ltd. 3.67 - 3.67
+Vedant Fashions Ltd. 3.05 - 3.05
+V-Guard Industries Ltd. 2.90 - 2.90
+Finolex Industries Ltd. 2.86 - 2.86
+Carborundum Universal Ltd. 2.82 - 2.82
+Lemon Tree Hotels Ltd. 2.79 - 2.79
+Elgi Equipments Ltd. 2.73 - 2.73
+Sheela Foam Ltd. 2.66 - 2.66
+Triveni Turbine Ltd. 2.62 - 2.62
+Fine Organic Industries Ltd. 2.62 - 2.62
+Kalpataru Power Transmission Ltd. 2.49 - 2.49
+ESAB India Ltd. 2.43 - 2.43
+Timken India Ltd. 2.40 - 2.40
+Westlife Foodworld Ltd. 2.26 - 2.26
+Chalet Hotels Ltd. 2.20 - 2.20
+Rajratan Global Wire Ltd. 2.18 - 2.18
+LIC Housing Finance Ltd. 2.08 - 2.08
+PVR Ltd. 2.06 - 2.06
+GR Infra Projects Ltd. 2.01 - 2.01
+Navin Fluorine International Ltd. 1.86 - 1.86
+Global Health Ltd. 1.76 - 1.76
+Hatsun Agro Product Ltd. 1.72 - 1.72
+CMS Infosystems Ltd. 1.69 - 1.69
+Grindwell Norton Ltd. 1.68 - 1.68
+CSB Bank Ltd. 1.68 - 1.68
+TTK Prestige Ltd. 1.52 - 1.52
+ZF Commercial Vehicle Control
+Systems India Ltd. 1.51 - 1.51
+Hawkins Cookers Ltd. 1.51 - 1.51
+Ahluwalia Contracts (India) Ltd. 1.40 - 1.40
+VST Industries Ltd. 1.39 - 1.39
+V-Mart Retail Ltd. 1.39 - 1.39
+City Union Bank Ltd. 1.29 - 1.29
+KNR Constructions Ltd. 1.28 - 1.28
+Go Fashion (India) Ltd. 1.25 - 1.25
+Dodla Dairy Ltd. 1.21 - 1.21
+Chemplast Sanmar Ltd. 1.15 - 1.15
+Ratnamani Metals & Tubes Ltd. 1.08 - 1.08
+Relaxo Footwears Ltd. 1.07 - 1.07
+Star Cement Ltd. 1.03 - 1.03
+Rossari Biotech Ltd. 0.96 - 0.96
+Nuvoco Vistas Corporation Ltd. 0.79 - 0.79
+Brigade Enterprises Ltd. 0.67 - 0.67
+Ge T&D India Ltd. 0.63 - 0.63
+Engineers India Ltd. 0.60 - 0.60
+Narayana Hrudayalaya Ltd. 0.49 - 0.49
+Alembic Ltd. 0.46 - 0.46
+Garware Technical Fibres Ltd. 0.42 - 0.42
+Thangamayil Jewellery Ltd. 0.41 - 0.41
+Anand Rathi Wealth Ltd. 0.32 - 0.32
+Zydus Wellness Ltd. 0.19 - 0.19
+Gujarat State Petronet Ltd. 0.14 - 0.14
+National Stock Exchange Of India Ltd.
+-25-Jan-23 - 8.30 8.30
+Shreno Ltd. 0.11 - -
+Total 83.38 8.30 91.68
+0.11 - -Total
+Non-Convertible Preference Shares
+Cash, Cash Equivalents
+And Others 8.21 - -
+Grand Total 100.00
+(%) Of Total
+AUM
+(%) Of Total
+AUM
+Stock Name Stock Name% of AUM
+Derivatives
+% of AUM
+Derivatives
+Net %
+of AUM
+Net %
+of AUM
+*Mr. Mohit Jain is the dedicated fund manager for managing overseas investments of the Scheme.
+17.99
+65.39
+0.11
+8.30
+8.21

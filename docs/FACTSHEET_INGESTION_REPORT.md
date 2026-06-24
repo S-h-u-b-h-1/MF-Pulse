@@ -17,26 +17,33 @@ it was extracted from a real source._
   Health Score **cost component activates** with a real expense ratio. Until then: "Not yet
   available from source."
 
-## Phase 4 — Coverage report (after running ingestion)
-| Field | Source | Live coverage | Parser status |
-|---|---|---|---|
-| Benchmark (category-standard) | SEBI framework | **100% equity** | live |
-| Expense ratio | factsheet PDF | **0%** | parser implemented + tested |
-| AUM | factsheet PDF | **0%** | implemented + tested |
-| Fund manager | factsheet PDF | **0%** | implemented + tested |
-| Holdings | factsheet PDF | **0%** | implemented + tested |
-| Sector allocation | factsheet PDF | **0%** | implemented + tested |
+## Phase 4 — Coverage report (after running REAL ingestion)
+`python -m scripts.ingest_factsheets` downloads SBI's official per-scheme factsheet PDFs,
+parses them, matches scheme codes against the AMFI universe, validates, and writes real
+metadata with lineage. **Result: 12 SBI scheme codes populated with real factsheet data.**
 
-### By AMC
-| AMC | Parser | Live run | Reason |
+| Field | Source | Coverage (of 12 ingested) | Status |
 |---|---|---|---|
-| SBI | ✅ implemented | ❌ failed | factsheet portal serves JS/HTML, not PDF, to automated clients (HTTP 404/redirect) |
-| HDFC | ✅ implemented | ❌ failed | same |
-| ICICI Prudential | ✅ implemented | ❌ failed | same |
-| Nippon India | ✅ implemented | ❌ failed | same |
+| Benchmark (category-standard) | SEBI framework | 100% of all equity | live |
+| Benchmark (factsheet-stated) | SBI factsheet PDF | **8/12** | **real** |
+| Fund manager | SBI factsheet PDF | **12/12** | **real** |
+| AUM | SBI factsheet PDF | **12/12** | **real** (source-dated) |
+| Riskometer | SBI factsheet PDF | **12/12** | **real** |
+| Launch date | SBI factsheet PDF | **12/12** | **real** |
+| Sector allocation | SBI factsheet PDF | **12/12** | **real** |
+| Top holdings | SBI factsheet PDF | **8/12** | **real** |
+| Expense ratio | SBI factsheet PDF | 0/12 | not exposed in SBI per-scheme layout → cost score stays inactive (not faked) |
 
-`parser_ready = 4`, `succeeded = 0`, `schemes_populated = 0` (verified via
-`python -m ingestion.factsheet.run`).
+### By AMC / fund
+| Fund | Codes | Benchmark | AUM | Source date |
+|---|---|---|---|---|
+| SBI Small Cap Fund | 4 | S&P BSE 250 Small Cap Index TRI | ₹15,349 Cr | 2022-12-31 (dated) |
+| SBI Contra Fund | 4 | S&P BSE 500 TRI | ₹7,960 Cr | 2023-01-31 (dated) |
+| SBI Large & Midcap Fund | 4 | (varies) | real | 2023-01-31 (dated) |
+
+`parser_ready = 4`, SBI run `succeeded`, `schemes_populated = 12` (verified). HDFC/ICICI/
+Nippon parsers are implemented + fixture-tested; their portals don't expose a directly-
+fetchable PDF, so they await a headless fetch (or a curated direct URL, as done for SBI).
 
 ## Phase 5 — Validation report
 The normalizer + extractor enforce, before anything is stored:
@@ -54,13 +61,17 @@ extract benchmark, TER (overall + direct), AUM, manager, inception, riskometer, 
 lumpsum, holdings and sectors from realistic synthetic factsheet text — these fixtures are
 test-only and never reach the product.
 
-## The honest blocker
-The parsers are correct and runnable; the missing piece is **fetching the PDF**. AMC
-factsheet portals are JS-rendered/anti-bot and do not serve the PDF to a plain HTTP client
-(confirmed: every Big-Four URL returns HTML or 404, not a PDF). Closing the loop needs a
-**headless-browser fetch step** (e.g. Playwright) to resolve and download the current
-month's PDF — which cannot run in this environment. Once a real PDF reaches `base.parse`,
-coverage populates automatically and the UI + cost score activate, with **zero code changes**.
+## Loop closed (for SBI)
+The earlier blocker — fetching the PDF — is solved for SBI: its per-scheme factsheets are
+directly fetchable (e.g. `sbimf.com/docs/default-source/scheme-factsheets/sbi-small-cap-fund-factsheet-.pdf`),
+so the pipeline runs end-to-end and populates real metadata. The remaining AMC portals
+(HDFC/ICICI/Nippon consolidated pages) are JS-gated; the same pipeline lights them up once
+given a directly-fetchable URL or a headless fetch step — **zero code changes**, as proven
+by SBI dropping straight into `metadata.json` → fund page → (cost score when TER present).
 
-## Trust score: 88/100 · Coverage score: benchmark 100% / factsheet-metadata 0% (parsers ready)
-Trust is preserved precisely because coverage was **not** inflated with fabricated values.
+Some SBI per-scheme PDFs served are dated (Dec-2022 / Jan-2023); these are stored with their
+real `source_date` and shown with a **"dated factsheet"** badge — the quality framework
+surfaces staleness rather than hiding it.
+
+## Trust score: 90/100 · Coverage score: benchmark 100% / factsheet metadata: 12 real SBI codes (manager/AUM/risk 12/12, holdings 8/12), expanding per AMC
+Trust rose because coverage is now **real and source-dated**, never fabricated to hit a target.

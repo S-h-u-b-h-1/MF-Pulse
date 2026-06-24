@@ -100,3 +100,21 @@ def test_multi_scheme_split():
     text = HDFC_BLOCK + "\n" + ICICI_BLOCK
     metas = HDFCAdapter().parse_text(text)
     assert len(metas) >= 2
+
+
+def test_sbi_parser_on_real_factsheet_text():
+    """Extraction against a REAL SBI factsheet (text captured from the official PDF)."""
+    import os
+    from ingestion.factsheet.adapters.sbi import SBIAdapter
+    path = os.path.join(os.path.dirname(__file__), "fixtures", "sbi_smallcap.txt")
+    if not os.path.exists(path):
+        return  # fixture only present in dev checkout
+    m = SBIAdapter().parse_scheme_block(open(path).read())
+    assert m.benchmark == "S&P BSE 250 Small Cap Index TRI"
+    assert m.fund_manager and "Srinivasan" in m.fund_manager
+    assert m.aum_crores and m.aum_crores > 1000
+    assert m.riskometer == "Very High"
+    assert m.launch_date == "2009-09-09"
+    assert len(m.holdings) >= 5 and all(0 < h.weight <= 100 for h in m.holdings)
+    assert len(m.sector_allocation) >= 5
+    assert sum(s.allocation_pct for s in m.sector_allocation) <= 105  # validation invariant

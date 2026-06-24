@@ -221,7 +221,14 @@ export default async function FundPage({ params }) {
                 ))}
               </div>
             ) : null}
-            {!meta && <p className="mt-3 border-t border-line pt-2.5 text-[11.5px] leading-relaxed text-ink-faint">Benchmark is the SEBI category standard. AUM, expense, manager, holdings &amp; sectors come from AMC factsheet PDFs — parsers implemented &amp; tested; live ingestion pending. Never fabricated.</p>}
+            {meta ? (
+              <p className="mt-3 border-t border-line pt-2.5 text-[11px] leading-relaxed text-ink-faint">
+                Source: {meta.source} · as of {meta.source_date || "—"}
+                {meta.source_date && meta.source_date < "2026-01-01" && <Badge tone="warn" dot>dated factsheet</Badge>}. AMC fields update monthly.
+              </p>
+            ) : (
+              <p className="mt-3 border-t border-line pt-2.5 text-[11.5px] leading-relaxed text-ink-faint">Benchmark is the SEBI category standard. AUM, expense, manager, holdings &amp; sectors come from AMC factsheet PDFs — parsers implemented &amp; tested. Never fabricated.</p>
+            )}
           </GlassPanel>
 
           <GlassPanel className="p-5">
