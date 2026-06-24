@@ -1,5 +1,22 @@
 # MF Pulse — Operational Runbook
 
+## ▶ Activate live daily ingestion (the #1 freshness lever)
+The daily pipeline + cron are built and idempotent; they only need the service-role key.
+1. Supabase → Project Settings → API → copy the **`service_role`** secret key.
+2. GitHub repo → Settings → Secrets and variables → Actions → New secret:
+   name `SUPABASE_SERVICE_ROLE_KEY`, value = that key.
+3. Done. The **Daily NAV pipeline** workflow runs at 8pm IST Mon–Sat (or run it now
+   via Actions → "Daily NAV pipeline" → Run workflow). Each run: ingests fresh NAV,
+   records `fact_pipeline_runs`, snapshots `fact_system_health`, refreshes matviews.
+   `/data-status` flips **green** once NAV is ≤ 2 days old.
+
+To run once locally instead: `SUPABASE_URL=… SUPABASE_SERVICE_ROLE_KEY=… python -m scripts.cloud_pipeline`
+
+## Connect real monthly flows (removes the last "sample")
+Export the SEBI/AMFI monthly net-flow report to a CSV (or the AMFI monthly Excel),
+then `python -m ingestion.sebi_flows <file>` (CSV) or `load_excel(<xlsx>, month)`.
+No code change — the loaders are ready; the source is just PDF-only today.
+
 ## Monitoring
 - **Live status page**: `/status` (data freshness, scheme coverage, signals, API reachability).
 - **Health endpoint**: `GET /health` on the API → `{"status":"up","db":true}`.
