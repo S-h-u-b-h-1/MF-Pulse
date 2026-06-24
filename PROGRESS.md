@@ -23,6 +23,8 @@ Durable tracker (survives across sessions). Updated 2026-06-21.
 ### 🌐 LIVE: https://frontend-six-beta-20.vercel.app
 ### 📦 Repo: https://github.com/S-h-u-b-h-1/MF-Pulse
 
+**Data layer hardened (production-grade):** Supabase Postgres is the source of truth (not Neon — no Neon instance exists). Append-only `fact_pipeline_runs` + `fact_system_health`, lineage columns (`source`/`ingested_at`), structured events. Idempotent **service-role daily pipeline** (`scripts/cloud_pipeline.py`) + GitHub Actions cron — activates on `SUPABASE_SERVICE_ROLE_KEY` secret. `/data-status` observability (green/amber/red freshness). Truthful copy (no "live flows"). Full audit in [docs/DATA_ARCHITECTURE.md](docs/DATA_ARCHITECTURE.md). **Production readiness: 74/100.**
+
 **Frontend = financial-intelligence platform** (Tailwind design system, 15 routes): Market Intelligence homepage (flow network, fund-flow heatmap, **sortable** AMC leaderboard, market-summary strip, trust signals), institutional **/brief** research note, **/signals**, **/compare** (comparison table), **/research** hub, **/analytics**, **/methodology**, per-AMC drilldown with **dynamic OG cards**. Accessible mobile nav (hamburger + sheet), professional loading skeletons, no Three.js dep. Home First Load JS ~89 kB.
 Real AMFI scheme/NAV universe + (sample) monthly net-flow headline. Reads Supabase via PostgREST.
 
