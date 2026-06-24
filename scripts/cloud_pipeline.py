@@ -96,6 +96,13 @@ def run() -> int:
         ]
         _post("fact_nav_daily", navs, "scheme_code,nav_date")
         rows_ingested, status = len(navs), "success"
+
+        # refresh the materialized analytics layer (fast reads)
+        try:
+            req = urllib.request.Request(f"{URL}/rest/v1/rpc/refresh_analytics", data=b"{}", method="POST", headers=_headers())
+            urllib.request.urlopen(req, timeout=120)
+        except Exception as e:
+            print(f"matview refresh skipped: {e}", file=sys.stderr)
     except Exception as e:  # failure logging, never crash silently
         err = str(e)[:500]
         print(f"PIPELINE FAILED: {err}", file=sys.stderr)

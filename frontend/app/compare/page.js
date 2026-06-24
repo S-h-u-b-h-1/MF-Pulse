@@ -10,7 +10,7 @@ export const revalidate = 3600;
 export default async function Compare() {
   let summary = [];
   try {
-    summary = await sb("v_amc_summary?select=*", { revalidate: 3600 });
+    summary = await sb("mv_amc_summary?select=*", { revalidate: 3600 });
   } catch {}
 
   const meta = {};

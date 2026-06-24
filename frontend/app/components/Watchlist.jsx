@@ -5,7 +5,7 @@ import SectionHeader from "./ui/SectionHeader";
 
 const KEY = "mfp_watchlist";
 
-export default function Watchlist() {
+export default function Watchlist({ amcDeltas = {} }) {
   const [items, setItems] = useState([]);
   const [navs, setNavs] = useState({});
 
@@ -49,9 +49,27 @@ export default function Watchlist() {
 
   if (!items.length) return null;
 
+  // Watchlist intelligence: aggregate over watched schemes' AMCs (real 30d index).
+  const amcs = [...new Set(items.map((i) => i.amc).filter(Boolean))];
+  const deltas = amcs.map((a) => amcDeltas[a]).filter((d) => d != null);
+  const avgDelta = deltas.length ? deltas.reduce((s, d) => s + d, 0) / deltas.length : null;
+
   return (
     <section className="mt-8">
-      <SectionHeader eyebrow="Saved" title={`★ Your watchlist · ${items.length}`} />
+      <SectionHeader
+        eyebrow="Saved · your funds"
+        title={`★ Watchlist · ${items.length}`}
+        action={
+          <span className="flex items-center gap-3">
+            <span>{amcs.length} AMCs</span>
+            {avgDelta != null && (
+              <span className={avgDelta >= 0 ? "text-pos" : "text-neg"}>
+                avg 30d {avgDelta >= 0 ? "+" : ""}{avgDelta.toFixed(2)}
+              </span>
+            )}
+          </span>
+        }
+      />
       <div className="glass divide-y divide-line px-5">
         {items.map((i) => (
           <div key={i.code} className="flex items-center gap-3 py-3 text-[13px]">

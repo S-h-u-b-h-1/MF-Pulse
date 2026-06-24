@@ -40,7 +40,7 @@ export default async function Brief() {
       sb("v_flow_headline?select=*", { revalidate: 600 }),
       sb("v_amc_flows?select=amc_name,asset_class,net_flow_cr", { revalidate: 600 }),
       sb("v_signals?select=*", { revalidate: 600 }),
-      sb("v_asset_class_summary?select=*", { revalidate: 600 }),
+      sb("mv_asset_class_summary?select=*", { revalidate: 600 }),
     ]);
   } catch {}
   const flow = headline[0] || {};

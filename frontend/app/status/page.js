@@ -18,7 +18,7 @@ export default async function Status() {
   let byClass = [], headline = [], signals = [], ok = true;
   try {
     [byClass, headline, signals] = await Promise.all([
-      sb("v_asset_class_summary?select=*", { revalidate: 300 }),
+      sb("mv_asset_class_summary?select=*", { revalidate: 300 }),
       sb("v_flow_headline?select=*", { revalidate: 300 }),
       sb("v_signals?select=z_score", { revalidate: 300 }),
     ]);

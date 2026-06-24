@@ -27,7 +27,7 @@ export default async function DataStatus() {
     [health, runs, byClass, flow] = await Promise.all([
       sb("v_latest_health?select=*", { revalidate: 60 }),
       sb("v_recent_runs?select=*&limit=10", { revalidate: 60 }),
-      sb("v_asset_class_summary?select=*", { revalidate: 60 }),
+      sb("mv_asset_class_summary?select=*", { revalidate: 60 }),
       sb("v_flow_headline?select=*", { revalidate: 60 }),
     ]);
   } catch {

@@ -1,6 +1,7 @@
 // MF Pulse — Market Intelligence homepage. Dense, terminal-grade, trust-signaled.
 import { sb } from "./lib/supabase";
 import { buildBrief } from "./lib/brief";
+import { marketIntel } from "./lib/intel";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import Search from "./components/Search";
@@ -14,6 +15,7 @@ import GlassPanel from "./components/ui/GlassPanel";
 import StatStrip from "./components/ui/StatStrip";
 import TrustBar from "./components/ui/TrustBar";
 import Leaderboard from "./components/Leaderboard";
+import DataTable from "./components/ui/DataTable";
 import SignalCard from "./components/ui/SignalCard";
 import PremiumButton from "./components/ui/PremiumButton";
 import Badge from "./components/ui/Badge";
@@ -30,8 +32,8 @@ const trendDelta = (amc) => {
 
 export default async function Page() {
   const [byClass, amcSummary, headline, amcFlows, signals, flowHistory] = await Promise.all([
-    sb("v_asset_class_summary?select=*"),
-    sb("v_amc_summary?select=*"),
+    sb("mv_asset_class_summary?select=*"),
+    sb("mv_amc_summary?select=*"),
     sb("v_flow_headline?select=*"),
     sb("v_amc_flows?select=amc_name,asset_class,net_flow_cr"),
     sb("v_signals?select=*"),
@@ -41,6 +43,12 @@ export default async function Page() {
   const totalSchemes = byClass.reduce((s, r) => s + Number(r.schemes), 0);
   const latest = byClass.map((r) => r.latest_nav_date).sort().at(-1);
   const brief = buildBrief({ headline: flow, amcFlows, signals });
+  const intel = marketIntel(trendData.amcs);
+  const amcDeltas = Object.fromEntries(Object.entries(trendData.amcs).map(([k, p]) => [k, p[p.length - 1][1] - p[0][1]]));
+  const moverCol = (label) => [
+    { key: "name", label, render: (r) => <a className="text-ink hover:text-accent-soft" href={`/amc/${encodeURIComponent(r.amc)}`}>{r.name}</a> },
+    { key: "change", label: "30d Δ", align: "right", render: (r) => <span className={r.change >= 0 ? "text-pos tnum" : "text-neg tnum"}>{r.change >= 0 ? "+" : ""}{r.change.toFixed(2)}</span> },
+  ];
 
   // Per-AMC aggregation for leaderboard
   const agg = {};
@@ -136,6 +144,31 @@ export default async function Page() {
         {/* Search */}
         <div className="mt-6"><Search /></div>
 
+        {/* Market intelligence — REAL 30-day equity index, no sample */}
+        <section className="mt-9">
+          <SectionHeader eyebrow="30-day equity index · real AMFI NAV history" title="Market intelligence" action={<Badge tone="pos" dot>live data</Badge>} />
+          <StatStrip
+            items={[
+              { label: "30d momentum", value: `${intel.avg >= 0 ? "+" : ""}${intel.avg.toFixed(2)}`, tone: intel.avg >= 0 ? "pos" : "neg", sub: "avg index Δ" },
+              { label: "Breadth", value: `${intel.positive}/${intel.n}`, sub: `${(intel.breadth * 100).toFixed(0)}% positive` },
+              { label: "Dispersion", value: intel.dispersion.toFixed(1), sub: "gain−loss range" },
+              { label: "Volatility", value: intel.stdev.toFixed(2), sub: "std dev of Δ" },
+              { label: "Best", value: `+${intel.gainers[0]?.change.toFixed(1)}`, tone: "pos", sub: intel.gainers[0]?.name },
+              { label: "Worst", value: intel.losers[0]?.change.toFixed(1), tone: "neg", sub: intel.losers[0]?.name },
+            ]}
+          />
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-pos">Top gainers</div>
+              <DataTable columns={moverCol("AMC")} rows={intel.gainers.map((r) => ({ ...r, _key: r.amc }))} />
+            </div>
+            <div>
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-neg">Top laggards</div>
+              <DataTable columns={moverCol("AMC")} rows={intel.losers.map((r) => ({ ...r, _key: r.amc }))} />
+            </div>
+          </div>
+        </section>
+
         {/* Heatmap */}
         <section className="mt-9">
           <SectionHeader eyebrow="6-month history · sample" title="Net equity-flow heatmap" />
@@ -160,7 +193,7 @@ export default async function Page() {
           <Leaderboard rows={leaderboard} />
         </section>
 
-        <Watchlist />
+        <Watchlist amcDeltas={amcDeltas} />
         <AlertSignup />
       </main>
 

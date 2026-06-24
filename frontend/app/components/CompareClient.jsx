@@ -1,6 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sparkline from "./Sparkline";
+
+const WS_KEY = "mfp_compare_ws";
 
 const fmt = (n) => new Intl.NumberFormat("en-IN").format(n);
 
@@ -12,6 +14,21 @@ export default function CompareClient({ amcs, meta = {} }) {
   };
   const sorted = [...names].sort((a, b) => change(b) - change(a));
   const [sel, setSel] = useState(sorted.slice(0, 3));
+  const [workspaces, setWorkspaces] = useState([]);
+  const [wsName, setWsName] = useState("");
+
+  useEffect(() => {
+    try { setWorkspaces(JSON.parse(localStorage.getItem(WS_KEY) || "[]")); } catch {}
+  }, []);
+  function persistWs(next) { setWorkspaces(next); localStorage.setItem(WS_KEY, JSON.stringify(next)); }
+  function saveWs() {
+    if (!sel.length) return;
+    const name = wsName.trim() || `Workspace ${workspaces.length + 1}`;
+    persistWs([{ name, sel }, ...workspaces.filter((w) => w.name !== name)].slice(0, 12));
+    setWsName("");
+  }
+  function loadWs(w) { setSel(w.sel.filter((n) => amcs[n])); }
+  function delWs(name) { persistWs(workspaces.filter((w) => w.name !== name)); }
 
   function toggle(n) {
     setSel((s) => (s.includes(n) ? s.filter((x) => x !== n) : s.length >= 4 ? s : [...s, n]));
@@ -26,6 +43,25 @@ export default function CompareClient({ amcs, meta = {} }) {
 
   return (
     <div>
+      {/* Saved comparison workspaces */}
+      <div className="mb-5 flex flex-wrap items-center gap-2">
+        <input
+          value={wsName}
+          onChange={(e) => setWsName(e.target.value)}
+          placeholder="Name this comparison…"
+          className="rounded-lg border border-line bg-white/[0.03] px-3 py-1.5 text-[12px] text-ink placeholder:text-ink-faint outline-none focus:border-accent"
+        />
+        <button onClick={saveWs} className="rounded-lg border border-accent/40 bg-accent/15 px-3 py-1.5 text-[12px] font-medium text-ink hover:bg-accent/25">
+          Save workspace
+        </button>
+        {workspaces.map((w) => (
+          <span key={w.name} className="inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-[12px] text-ink-muted">
+            <button onClick={() => loadWs(w)} className="hover:text-ink">{w.name} · {w.sel.length}</button>
+            <button onClick={() => delWs(w.name)} aria-label="Delete workspace" className="text-ink-faint hover:text-neg">✕</button>
+          </span>
+        ))}
+      </div>
+
       <div className="mb-2 text-[12px] text-ink-faint">Select up to 4 AMCs ({sel.length}/4)</div>
       <div className="mb-6 flex max-h-40 flex-wrap gap-2 overflow-y-auto">
         {sorted.map((n) => {

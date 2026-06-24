@@ -23,7 +23,7 @@ export default async function AmcPage({ params }) {
   const enc = encodeURIComponent(amc);
 
   const [summary, schemes, signals] = await Promise.all([
-    sb(`v_amc_summary?amc_name=eq.${enc}&select=asset_class,schemes&order=schemes.desc`),
+    sb(`mv_amc_summary?amc_name=eq.${enc}&select=asset_class,schemes&order=schemes.desc`),
     sb(`dim_scheme?amc_name=eq.${enc}&asset_class=eq.Equity&select=scheme_code,scheme_name,asset_class,fact_nav_daily(nav_value,nav_date)&limit=40`),
     sb(`v_signals?amc_name=eq.${enc}&select=*`),
   ]);
