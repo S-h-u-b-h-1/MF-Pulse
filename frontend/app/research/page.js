@@ -11,7 +11,7 @@ const GROUPS = [
     title: "Briefings & signals",
     items: [
       { t: "Market Brief", d: "Monthly flow narrative auto-composed from the dataset — leaders, breadth, and standout moves.", href: "/brief", tag: "monthly" },
-      { t: "Flow Signals", d: "AMC × category net-flow surges flagged by z-score against trailing history.", href: "/signals", tag: "live" },
+      { t: "Flow Signals", d: "AMC × category net-flow surges flagged by z-score against trailing history.", href: "/signals", tag: "monthly" },
     ],
   },
   {

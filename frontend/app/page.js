@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import Search from "./components/Search";
 import Tracker from "./components/Tracker";
 import Watchlist from "./components/Watchlist";
-import FlowNetwork from "./components/FlowNetwork";
+import HeroVisual from "./components/HeroVisual";
 import FlowHeatmap from "./components/FlowHeatmap";
 import AlertSignup from "./components/AlertSignup";
 import SectionHeader from "./components/ui/SectionHeader";
@@ -87,8 +87,8 @@ export default async function Page() {
     { label: "Equity net", value: inr(flow.equity_net_cr ?? 0), tone: "pos", sub: "sample" },
     { label: "Debt net", value: inr(flow.debt_net_cr ?? 0), tone: "neg", sub: "sample" },
     { label: "Active signals", value: signals.length, sub: "z ≥ 1.8" },
-    { label: "Schemes", value: fmt(totalSchemes), sub: "live · AMFI" },
-    { label: "AMC houses", value: "51", sub: "live" },
+    { label: "Schemes", value: fmt(totalSchemes), sub: "AMFI · daily" },
+    { label: "AMC houses", value: "51", sub: "AMFI" },
   ];
 
   return (
@@ -108,7 +108,7 @@ export default async function Page() {
             <PremiumButton href="#alerts">Get Flow Alerts</PremiumButton>
           </div>
         </div>
-        <TrustBar asOf={latest} className="mt-3.5" sources={[{ label: "NAVs", value: "AMFI" }, { label: "Flows", value: "SEBI · sample" }]} />
+        <TrustBar asOf={latest} label="Latest AMFI NAV" className="mt-3.5" sources={[{ label: "NAVs", value: "AMFI · daily" }, { label: "Flows", value: "SEBI · sample" }]} />
 
         {/* Market summary strip */}
         <div className="mt-6"><StatStrip items={stats} /></div>
@@ -116,8 +116,8 @@ export default async function Page() {
         {/* Network + brief */}
         <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-3">
           <GlassPanel className="lg:col-span-2 p-5 sm:p-6">
-            <SectionHeader eyebrow={`net flows · ${flow.month || "—"}`} title="Fund-flow network · AMC → category" action={<Badge tone="warn">sample</Badge>} />
-            <FlowNetwork nodes={networkNodes} />
+            <SectionHeader eyebrow={`net flows · ${flow.month || "—"}`} title="Capital allocation network · AMC → category" action={<Badge tone="warn">sample</Badge>} />
+            <HeroVisual nodes={networkNodes} />
           </GlassPanel>
           <GlassPanel className="p-5 sm:p-6">
             <SectionHeader title="Market brief" action={<a className="hover:text-ink" href="/brief">Full →</a>} />
@@ -164,7 +164,7 @@ export default async function Page() {
         <AlertSignup />
       </main>
 
-      <Footer note={<span>Scheme &amp; NAV data <b className="text-ink-muted">live from AMFI</b> ({fmt(totalSchemes)} schemes, 51 AMCs, nightly). Net-flow figures <b className="text-warn">sample</b> until SEBI export is wired in.</span>} />
+      <Footer note={<span><b className="text-ink-muted">Daily NAV intelligence</b> from AMFI — latest available: {latest} ({fmt(totalSchemes)} schemes, 51 AMCs). Monthly net-flow figures are <b className="text-warn">sample data</b> until the SEBI export is wired in. <a className="text-ink-muted hover:text-ink" href="/data-status">Data status →</a></span>} />
     </>
   );
 }

@@ -68,7 +68,7 @@ export default async function Brief() {
 
         {/* Sample-data disclosure */}
         <div className="mt-5 max-w-3xl rounded-xl border border-warn/30 bg-warn/10 px-4 py-3 text-[12.5px] text-warn">
-          <b>Disclosure:</b> <span className="text-ink-muted">Monthly net-flow figures in this note are <b className="text-warn">sample data</b>. The SEBI/AMFI monthly report is PDF-only and not yet wired in; scheme &amp; NAV data is live from AMFI. Figures are illustrative until the export is connected.</span>
+          <b>Disclosure:</b> <span className="text-ink-muted">Monthly net-flow figures in this note are <b className="text-warn">sample data</b>. The SEBI/AMFI monthly report is PDF-only and not yet wired in; scheme &amp; NAV data is daily from AMFI. Figures are illustrative until the export is connected.</span>
         </div>
 
         <div className="mt-6 max-w-3xl"><StatStrip items={stats} /></div>

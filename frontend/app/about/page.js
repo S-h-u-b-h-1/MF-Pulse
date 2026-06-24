@@ -13,7 +13,7 @@ export default function About() {
       <main className="container-px py-10">
         <h1 className="text-[28px] sm:text-[34px] font-bold tracking-tightest text-ink">About MF Pulse</h1>
         <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-ink-muted">
-          A live Indian mutual-fund flow intelligence platform, built entirely on free public data.
+          A daily Indian mutual-fund intelligence platform, built entirely on free public data.
         </p>
 
         <section className="mt-8">

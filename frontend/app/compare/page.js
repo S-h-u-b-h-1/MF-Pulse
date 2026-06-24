@@ -38,7 +38,7 @@ export default async function Compare() {
           <CompareClient amcs={trendData.amcs} meta={meta} />
         </div>
       </main>
-      <Footer note={<span>30-day equity index from real AMFI NAV history · scheme counts live from AMFI.</span>} />
+      <Footer note={<span>30-day equity index from real AMFI NAV history · scheme counts from latest AMFI data.</span>} />
     </>
   );
 }

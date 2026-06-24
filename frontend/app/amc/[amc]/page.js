@@ -53,7 +53,7 @@ export default async function AmcPage({ params }) {
       <main className="container-px py-8 sm:py-10">
         <a href="/" className="text-[13px] text-ink-muted transition-colors hover:text-ink">← Dashboard</a>
         <h1 className="mt-4 text-[27px] sm:text-[34px] font-bold tracking-tightest text-ink">{amc}</h1>
-        <div className="mt-1.5 text-[13px] text-ink-muted">{fmt(total)} schemes tracked · live AMFI NAVs</div>
+        <div className="mt-1.5 text-[13px] text-ink-muted">{fmt(total)} schemes · latest AMFI NAV</div>
 
         <div className="mt-7 grid grid-cols-2 gap-3.5 sm:grid-cols-4">
           <MetricCard value={fmt(total)} label="Total schemes" style={{ animationDelay: "0ms" }} />
@@ -135,7 +135,7 @@ export default async function AmcPage({ params }) {
         </section>
       </main>
 
-      <Footer note={<span>Live NAV from AMFI · drill-downs &amp; searches are logged for product analytics.</span>} />
+      <Footer note={<span>Daily NAV from AMFI (latest available) · drill-downs &amp; searches logged for product analytics.</span>} />
     </>
   );
 }

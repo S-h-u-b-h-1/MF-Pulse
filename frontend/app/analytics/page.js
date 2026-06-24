@@ -55,10 +55,10 @@ export default async function Analytics() {
       <main className="container-px py-10">
         <h1 className="text-[28px] sm:text-[34px] font-bold tracking-tightest text-ink">Product Analytics</h1>
         <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-ink-muted">
-          Live behavioural data from real visitors — searches, drill-downs, watchlist actions and
+          Live platform activity from real visitors — searches, drill-downs, watchlist actions and
           sign-ups. Aggregated only; no personal data is exposed.
         </p>
-        <TrustBar asOf={lastSeen ? new Date(lastSeen).toLocaleString("en-IN") : "—"} className="mt-3" sources={[{ label: "Source", value: "user_events" }, { label: "PII", value: "none" }]} />
+        <TrustBar asOf={lastSeen ? new Date(lastSeen).toLocaleString("en-IN") : "—"} label="Live activity" className="mt-3" sources={[{ label: "Source", value: "user_events" }, { label: "PII", value: "none" }]} />
 
         <div className="mt-6 max-w-3xl"><StatStrip items={stats} /></div>
 
