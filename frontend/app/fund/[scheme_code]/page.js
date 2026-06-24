@@ -8,7 +8,7 @@ import GlassPanel from "../../components/ui/GlassPanel";
 import Badge from "../../components/ui/Badge";
 import { getFund, cohortOf, asOf } from "../../lib/funds";
 import { getNavHistory } from "../../lib/mfapi";
-import { fundSignals, researchSummary, visibleReturns, riskInterpretation } from "../../lib/fundAnalysis";
+import { fundSignals, researchSummary, visibleReturns, riskInterpretation, benchmarkRows } from "../../lib/fundAnalysis";
 import { fundHealth, gradeTone, LABELS } from "../../lib/fundHealth";
 
 export const revalidate = 3600;
@@ -47,6 +47,7 @@ export default async function FundPage({ params }) {
   const history = await getNavHistory(f.code);
   const sig = fundSignals(f, cohort);
   const rets = visibleReturns(f);
+  const bench = benchmarkRows(f, cohort);
   const health = fundHealth(f);
   const [fTone, fLabel] = freshness(f.staleDays);
   const histDays = history?.points?.length || 0;
@@ -161,18 +162,48 @@ export default async function FundPage({ params }) {
           </GlassPanel>
         </div>
 
+        {/* 6 · Benchmark & peer outperformance */}
+        {f.benchmark && (
+          <section className="mt-7">
+            <SectionHeader eyebrow={`category-standard benchmark${f.benchmarkStd ? " · SEBI" : " · varies by mandate"}`} title="Benchmark & peers" action={<Badge tone="neutral">{f.benchmark}</Badge>} />
+            <GlassPanel className="p-5 sm:p-6">
+              {bench.length ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-[12.5px]">
+                    <thead><tr className="border-b border-line text-[10.5px] uppercase tracking-[0.08em] text-ink-faint">
+                      <th className="py-2 text-left">Window</th><th className="py-2 text-right">Fund</th><th className="py-2 text-right">Peer avg</th><th className="py-2 text-right">vs peers</th>
+                    </tr></thead>
+                    <tbody>
+                      {bench.map((b) => (
+                        <tr key={b.label} className="border-b border-line/50 last:border-0">
+                          <td className="py-2 text-ink-muted">{b.label}{b.pa ? " p.a." : ""}</td>
+                          <td className={`py-2 text-right tnum ${b.fund >= 0 ? "text-pos" : "text-neg"}`}>{sgn(b.fund, 1)}</td>
+                          <td className="py-2 text-right tnum text-ink-faint">{sgn(b.peer, 1)}</td>
+                          <td className={`py-2 text-right tnum font-semibold ${b.delta >= 0 ? "text-pos" : "text-neg"}`}>{b.delta >= 0 ? "+" : ""}{b.delta.toFixed(1)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p className="mt-3 text-[11.5px] leading-relaxed text-ink-faint">Compared against the {f.plan} {f.category} peer cohort (real NAV). Index-return comparison vs {f.benchmark} requires an index series — pending. 3Y/5Y annualised.</p>
+                </div>
+              ) : <p className="text-[12.5px] text-ink-faint">Not enough overlapping history for a peer comparison.</p>}
+            </GlassPanel>
+          </section>
+        )}
+
         {/* 7 · Metadata + 8 · Signals + 10 · Data quality */}
         <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-3">
           <GlassPanel className="p-5">
             <SectionHeader title="Portfolio & metadata" />
             <div className="space-y-2.5">
+              <div className="flex items-center justify-between gap-2 text-[12.5px]"><span className="text-ink-faint">Benchmark</span><span className="text-right text-ink-muted">{f.benchmark || "Not yet available"}</span></div>
               <Metric label="AUM" value="Not yet available" />
               <Metric label="Expense ratio" value="Not yet available" />
-              <Metric label="Benchmark" value="Not yet available" />
               <Metric label="Fund manager" value="Not yet available" />
               <Metric label="Top holdings" value="Not yet available" />
+              <Metric label="Sector allocation" value="Not yet available" />
             </div>
-            <p className="mt-3 border-t border-line pt-2.5 text-[11.5px] leading-relaxed text-ink-faint">From AMC factsheets (PDF) — not yet ingested. Tracked in the data-source roadmap; never fabricated.</p>
+            <p className="mt-3 border-t border-line pt-2.5 text-[11.5px] leading-relaxed text-ink-faint">Benchmark is the SEBI category standard. AUM, expense, manager, holdings &amp; sectors come from AMC factsheet PDFs — ingestion framework built, parsers pending. Never fabricated.</p>
           </GlassPanel>
 
           <GlassPanel className="p-5">

@@ -41,8 +41,14 @@ export function researchSummary(f, cohort) {
   }
   if (f.r1y != null) parts.push(`Its 1-year NAV return is ${pct(f.r1y)}${f.r3m != null ? ` and 3-month is ${pct(f.r3m)}` : ""}.`);
   else if (f.r3m != null) parts.push(`Its 3-month NAV return is ${pct(f.r3m)}; 1-year history is not yet available.`);
+  if (f.vol90 != null) parts.push(`Risk profile: 90-day volatility ${f.vol90}%, max drawdown ${f.maxdd90}%.`);
   if (f.trend != null) parts.push(`The short-vs-medium momentum reading is ${f.trend >= 60 ? "improving" : f.trend <= 40 ? "weakening" : "steady"} (trend score ${f.trend}/100).`);
   if (cohort) parts.push(`The ${f.plan} ${f.category} peer set averaged ${pct(cohort.avg)} over 1 month across ${cohort.count} funds.`);
+  if (f.benchmark) {
+    const y = cohort?.winAvg?.r1y != null && f.r1y != null ? f.r1y - cohort.winAvg.r1y : null;
+    parts.push(`Category-standard benchmark: ${f.benchmark}${y != null ? `; over 1 year it is ${y >= 0 ? "ahead of" : "behind"} its peer average by ${Math.abs(y).toFixed(1)} pts` : ""}.`);
+  }
+  parts.push(`Cost/expense data is not yet ingested from factsheets, so the cost component is excluded from the Health Score rather than estimated.`);
   return parts.join(" ");
 }
 
@@ -55,6 +61,20 @@ export function visibleReturns(f) {
     ["3Y", f.r3y != null ? cagr(f.r3y, 3) : null, "p.a."],
     ["5Y", f.r5y != null ? cagr(f.r5y, 5) : null, "p.a."],
   ].filter(([, v]) => v != null);
+}
+
+// Fund vs category-peer outperformance per window (real). The SEBI category-standard
+// benchmark index is named separately on the page; index-return comparison needs an index
+// series (pending), so the honest comparison shown today is fund vs its peer cohort.
+export function benchmarkRows(f, cohort) {
+  if (!cohort?.winAvg) return [];
+  const cagr = (r, yrs) => (Math.pow(1 + r / 100, 1 / yrs) - 1) * 100;
+  const W = [["1W", "r1w", 1], ["1M", "r1m", 1], ["3M", "r3m", 1], ["6M", "r6m", 1], ["1Y", "r1y", 1], ["3Y", "r3y", 3], ["5Y", "r5y", 5]];
+  return W.filter(([, k]) => f[k] != null && cohort.winAvg[k] != null).map(([label, k, yrs]) => {
+    const fund = yrs > 1 ? cagr(f[k], yrs) : f[k];
+    const peer = yrs > 1 ? cagr(cohort.winAvg[k], yrs) : cohort.winAvg[k];
+    return { label, fund, peer, delta: fund - peer, pa: yrs > 1 };
+  });
 }
 
 // Plain-language risk interpretation from real volatility + drawdown.

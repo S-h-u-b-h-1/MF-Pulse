@@ -24,6 +24,7 @@ from datetime import date, datetime, timedelta
 from statistics import mean, median, pstdev
 
 from ingestion.amfi_parser import parse_file
+from ingestion.benchmarks import resolve_benchmark
 
 REPORT = "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx"
 ANCHORS = [("r6m", 182), ("r1y", 365), ("r3y", 1095), ("r5y", 1825)]
@@ -159,6 +160,9 @@ def main():
         risk = risk_from_series(s)
         if risk:
             rec.update(risk)
+        if r.asset_class == "Equity":
+            bm, std = resolve_benchmark(rec["category"], name)
+            rec["benchmark"], rec["benchmarkStd"] = bm, std
         funds[code] = rec
 
     # category rank/percentile in (category, plan) equity-growth cohorts
@@ -175,7 +179,13 @@ def main():
             f["catPct"] = round(100 * (1 - i / n)) if n > 1 else 100
             f["cohortKey"] = key
         rets = [x["r1m"] for x in ranked]
+        win_avg = {}
+        for w in ("r1w", "r1m", "r3m", "r6m", "r1y", "r3y", "r5y"):
+            vs = [x[w] for x in ranked if x.get(w) is not None]
+            if vs:
+                win_avg[w] = round(mean(vs), 2)
         cohorts[key] = {"avg": round(mean(rets), 2), "median": round(median(rets), 2), "count": n,
+                        "winAvg": win_avg,
                         "best": {"code": ranked[0]["code"], "name": ranked[0]["name"], "ret": ranked[0]["r1m"]},
                         "worst": {"code": ranked[-1]["code"], "name": ranked[-1]["name"], "ret": ranked[-1]["r1m"]}}
 
