@@ -33,6 +33,12 @@ export default async function DataStatus() {
   } catch {
     ok = false;
   }
+  // Pipeline reliability stats — fetched independently so a missing view never breaks the page.
+  let pstats = {};
+  try {
+    const s = await sb("v_pipeline_stats?select=*", { revalidate: 60 });
+    pstats = s[0] || {};
+  } catch {}
   const h = health[0] || {};
   const latestNav = byClass.map((r) => r.latest_nav_date).sort().at(-1);
   const totalSchemes = byClass.reduce((s, r) => s + Number(r.schemes), 0);
@@ -96,6 +102,26 @@ export default async function DataStatus() {
 
         {/* Coverage */}
         <section className="mt-6"><StatStrip items={stats} /></section>
+
+        {/* Pipeline reliability monitoring */}
+        <section className="mt-9">
+          <SectionHeader eyebrow="reliability · nav_daily" title="Pipeline monitoring" />
+          <StatStrip
+            items={[
+              { label: "Success rate", value: pstats.success_rate != null ? `${pstats.success_rate}%` : "—", tone: (pstats.success_rate ?? 100) >= 95 ? "pos" : "neg" },
+              { label: "Total runs", value: pstats.total_runs != null ? fmt(pstats.total_runs) : "—" },
+              { label: "Consecutive fails", value: pstats.consecutive_failures ?? "—", tone: (pstats.consecutive_failures ?? 0) > 0 ? "neg" : "pos" },
+              { label: "Last failure", value: pstats.last_failed_at ? new Date(pstats.last_failed_at).toLocaleDateString("en-IN") : "none" },
+            ]}
+          />
+          {pstats.last_error && (
+            <GlassPanel className="mt-3 p-4">
+              <div className="text-[11px] uppercase tracking-[0.1em] text-ink-faint">Last error</div>
+              <code className="mt-1.5 block break-words text-[12px] text-neg">{pstats.last_error}</code>
+            </GlassPanel>
+          )}
+          <p className="mt-2 text-[11px] text-ink-faint">Alerts on failure / stale data → GitHub annotation (always) · Slack &amp; webhook when configured (<code className="text-ink-muted">SLACK_WEBHOOK_URL</code>, <code className="text-ink-muted">ALERT_WEBHOOK_URL</code>).</p>
+        </section>
 
         {/* Pipeline runs */}
         <section className="mt-9">

@@ -18,6 +18,9 @@ jobs:
         env:
           SUPABASE_URL: https://autijihzocnxduipeaop.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          # Optional alert channels — set as repo secrets to enable.
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          ALERT_WEBHOOK_URL: ${{ secrets.ALERT_WEBHOOK_URL }}
         run: |
           if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
             echo "::warning::SUPABASE_SERVICE_ROLE_KEY not set — skipping ingestion."

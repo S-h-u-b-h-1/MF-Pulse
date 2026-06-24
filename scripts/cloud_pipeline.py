@@ -24,6 +24,8 @@ import urllib.request
 from datetime import date, datetime, timezone
 
 from ingestion.amfi_parser import parse_lines
+from ingestion.alerting import alert_for_run, send_alert
+from ingestion.freshness import build_health
 
 URL = os.environ["SUPABASE_URL"].rstrip("/")
 KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
@@ -124,16 +126,23 @@ def run() -> int:
     # ---- freshness snapshot ----
     try:
         if src_date:
-            stale = (date.today() - src_date).days
-            health_status = "green" if stale <= 2 else "amber" if stale <= 7 else "red"
-            _post("fact_system_health", [{
-                "nav_latest_date": src_date.isoformat(), "nav_staleness_days": stale,
-                "total_schemes": len({r.scheme_code for r in records}) if status == "success" else None,
-                "total_nav_rows": _count("fact_nav_daily"), "total_events": _count("user_events"),
-                "status": health_status,
-            }])
+            snap = build_health(
+                src_date,
+                total_schemes=len({r.scheme_code for r in records}) if status == "success" else None,
+                total_nav_rows=_count("fact_nav_daily"),
+                total_events=_count("user_events"),
+            )
+            _post("fact_system_health", [snap])
     except Exception as e:
         print(f"could not snapshot health: {e}", file=sys.stderr)
+
+    # ---- alerting: failure, missing, or stale-data detection ----
+    decision = alert_for_run(status, src_date)
+    if decision:
+        subject, message, severity = decision
+        if status != "success" and err:
+            message = err  # surface the real error in the alert
+        send_alert(subject, message, severity)
 
     print(f"cloud_pipeline: status={status} rows={rows_ingested} dur={duration_ms}ms")
     return 0 if status == "success" else 1
