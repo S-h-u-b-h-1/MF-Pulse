@@ -22,8 +22,12 @@ export default function WatchButton({ code, name, amc }) {
   }
 
   return (
-    <button className={`watch ${on ? "on" : ""}`} onClick={toggle}
-      title={on ? "Remove from watchlist" : "Add to watchlist"} aria-label="Toggle watchlist">
+    <button
+      onClick={toggle}
+      title={on ? "Remove from watchlist" : "Add to watchlist"}
+      aria-label="Toggle watchlist"
+      className={`text-[17px] leading-none transition-transform hover:scale-110 ${on ? "text-warn" : "text-ink-faint hover:text-warn"}`}
+    >
       {on ? "★" : "☆"}
     </button>
   );

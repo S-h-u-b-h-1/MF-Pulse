@@ -1,43 +1,45 @@
+import Nav from "../components/Nav";
+import Footer from "../components/Footer";
+import GlassPanel from "../components/ui/GlassPanel";
+import SectionHeader from "../components/ui/SectionHeader";
+import Badge from "../components/ui/Badge";
+
 export const metadata = { title: "About & data sources" };
 
 export default function About() {
   return (
-    <main>
-      <header className="site-head">
-        <div className="brand"><a href="/"><span className="pulse-dot" /> MF Pulse</a></div>
-        <a className="back" href="/">← Dashboard</a>
-      </header>
+    <>
+      <Nav active="/about" />
+      <main className="container-px py-10">
+        <h1 className="text-[28px] sm:text-[34px] font-bold tracking-tightest text-ink">About MF Pulse</h1>
+        <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-ink-muted">
+          A live Indian mutual-fund flow intelligence platform, built entirely on free public data.
+        </p>
 
-      <h1 className="amc-title">About MF Pulse</h1>
-      <div className="amc-sub">Daily Indian mutual-fund flows & NAVs, from free public data.</div>
+        <section className="mt-8">
+          <SectionHeader title="Data sources" />
+          <GlassPanel className="p-5 sm:p-6">
+            <ul className="space-y-3 text-[13.5px] leading-relaxed text-ink-muted">
+              <li><b className="text-ink">NAVs &amp; schemes</b> — AMFI daily <code className="text-ink-muted">NAVAll.txt</code> (free, public), refreshed nightly.</li>
+              <li><b className="text-ink">NAV history</b> — AMFI date-range report powering the real 30-day equity index.</li>
+              <li className="flex flex-wrap items-center gap-2"><span><b className="text-ink">Monthly net flows</b> — SEBI / AMFI monthly reports (PDF/Excel only).</span> <Badge tone="warn">sample until export wired</Badge></li>
+            </ul>
+          </GlassPanel>
+        </section>
 
-      <section className="section">
-        <div className="section-head"><h2>Data sources</h2></div>
-        <div className="panel">
-          <ul style={{ lineHeight: 2, fontSize: 14, color: "var(--muted)", paddingLeft: 18 }}>
-            <li><b style={{ color: "var(--text)" }}>NAVs & schemes</b> — AMFI daily <code>NAVAll.txt</code> (free, public), refreshed nightly.</li>
-            <li><b style={{ color: "var(--text)" }}>NAV history</b> — AMFI date-range NAV report (real 30-day equity index).</li>
-            <li><b style={{ color: "var(--text)" }}>Monthly net flows</b> — SEBI / AMFI monthly reports. The source is PDF/Excel only, so the headline flow figures shown are <b style={{ color: "#fcd34d" }}>sample data</b> until the monthly export is wired in.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="section-head"><h2>How it works</h2></div>
-        <div className="panel">
-          <p style={{ color: "var(--muted)", fontSize: 14, lineHeight: 1.7 }}>
-            A nightly pipeline downloads the AMFI file, parses it, loads Postgres, runs dbt
-            transforms + data-quality gates, detects flow spikes, and serves everything through
-            a cached API and this dashboard. Searches, drill-downs and alert sign-ups are logged
-            for product analytics.
-          </p>
-        </div>
-      </section>
-
-      <footer className="foot">
-        Not investment advice. Data © <a href="https://www.amfiindia.com">AMFI</a> / SEBI.
-        · <a href="/status">System status</a> · <a href="https://github.com/S-h-u-b-h-1/MF-Pulse">Source</a>
-      </footer>
-    </main>
+        <section className="mt-8">
+          <SectionHeader title="How it works" />
+          <GlassPanel className="p-5 sm:p-6">
+            <p className="text-[13.5px] leading-relaxed text-ink-muted">
+              A nightly pipeline downloads the AMFI file, parses it, loads Postgres, runs dbt transforms
+              and data-quality gates, detects flow spikes, and serves everything through a cached API and
+              this dashboard. Searches, drill-downs and sign-ups feed a privacy-safe analytics dataset.
+              Full detail on the <a className="text-accent-soft hover:underline" href="/methodology">methodology</a> page.
+            </p>
+          </GlassPanel>
+        </section>
+      </main>
+      <Footer note={<span>Not investment advice. Data © AMFI / SEBI.</span>} />
+    </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SUPA } from "../lib/supabase";
+import SectionHeader from "./ui/SectionHeader";
 
 const KEY = "mfp_watchlist";
 
@@ -49,17 +50,21 @@ export default function Watchlist() {
   if (!items.length) return null;
 
   return (
-    <section className="panel">
-      <h2>★ Your watchlist · {items.length}</h2>
-      <ul className="watchlist">
+    <section className="mt-8">
+      <SectionHeader eyebrow="Saved" title={`★ Your watchlist · ${items.length}`} />
+      <div className="glass divide-y divide-line px-5">
         {items.map((i) => (
-          <li key={i.code}>
-            <span className="wl-name">{i.name}</span>
-            <span className="wl-nav">{navs[i.code] ? `₹${Number(navs[i.code].nav_value).toFixed(2)}` : "—"}</span>
-            <button className="wl-del" onClick={() => remove(i.code)} aria-label="Remove">✕</button>
-          </li>
+          <div key={i.code} className="flex items-center gap-3 py-3 text-[13px]">
+            <span className="flex-1 truncate text-ink">{i.name}</span>
+            <span className="tnum font-bold text-pos">
+              {navs[i.code] ? `₹${Number(navs[i.code].nav_value).toFixed(2)}` : "—"}
+            </span>
+            <button onClick={() => remove(i.code)} aria-label="Remove" className="text-ink-faint hover:text-neg transition-colors">
+              ✕
+            </button>
+          </div>
         ))}
-      </ul>
+      </div>
     </section>
   );
 }

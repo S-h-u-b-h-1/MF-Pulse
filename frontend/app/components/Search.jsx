@@ -7,6 +7,7 @@ export default function Search() {
   const [q, setQ] = useState("");
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const timer = useRef(null);
 
   function onChange(e) {
@@ -19,6 +20,8 @@ export default function Search() {
       setOpen(false);
       return;
     }
+    setLoading(true);
+    setOpen(true);
     timer.current = setTimeout(async () => {
       const term = encodeURIComponent(`*${clean}*`);
       const filter = `or=(scheme_name.ilike.${term},amc_name.ilike.${term})`;
@@ -29,43 +32,51 @@ export default function Search() {
         );
         const rows = await res.json();
         setResults(Array.isArray(rows) ? rows : []);
-        setOpen(true);
         track("search", { q: clean, results: Array.isArray(rows) ? rows.length : 0 });
       } catch {
         setResults([]);
+      } finally {
+        setLoading(false);
       }
-    }, 350);
+    }, 320);
   }
 
   return (
-    <div className="search">
+    <div className="relative">
       <input
-        className="search-input"
+        className="w-full rounded-2xl border border-line-strong bg-white/[0.03] py-3.5 pl-12 pr-4 text-[15px] text-ink placeholder:text-ink-faint outline-none transition-shadow focus:border-accent focus:ring-4 focus:ring-accent/15"
         placeholder="Search 14,000+ schemes or an AMC…"
         value={q}
         onChange={onChange}
         onFocus={() => results.length && setOpen(true)}
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%238b93a7' stroke-width='2'%3E%3Ccircle cx='8' cy='8' r='6'/%3E%3Cpath d='M13 13l4 4'/%3E%3C/svg%3E\")",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "16px center",
+        }}
       />
-      {open && results.length > 0 && (
-        <ul className="search-results">
-          {results.map((r) => (
-            <li key={r.scheme_code}>
-              <a
-                href={`/amc/${encodeURIComponent(r.amc_name)}`}
-                onClick={() => track("search_click", { scheme_code: r.scheme_code, amc: r.amc_name })}
-              >
-                <span className="sr-name">{r.scheme_name}</span>
-                <span className="sr-meta">
-                  {r.amc_name.replace(" Mutual Fund", "")} · {r.asset_class}
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
-      {open && results.length === 0 && q.trim().length >= 2 && (
-        <ul className="search-results">
-          <li className="sr-empty">No matches for “{q.trim()}”.</li>
+      {open && (
+        <ul className="absolute left-0 right-0 z-30 mt-2 rounded-2xl border border-line-strong bg-[#0c1120] p-1.5 shadow-glass">
+          {loading && <li className="px-3 py-2.5 text-[13px] text-ink-faint">Searching…</li>}
+          {!loading && results.length === 0 && q.trim().length >= 2 && (
+            <li className="px-3 py-2.5 text-[13px] text-ink-muted">No matches for “{q.trim()}”.</li>
+          )}
+          {!loading &&
+            results.map((r) => (
+              <li key={r.scheme_code}>
+                <a
+                  href={`/amc/${encodeURIComponent(r.amc_name)}`}
+                  onClick={() => track("search_click", { scheme_code: r.scheme_code, amc: r.amc_name })}
+                  className="flex flex-col gap-0.5 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/[0.05]"
+                >
+                  <span className="text-[13px] text-ink">{r.scheme_name}</span>
+                  <span className="text-[11px] text-ink-muted">
+                    {r.amc_name.replace(" Mutual Fund", "")} · {r.asset_class}
+                  </span>
+                </a>
+              </li>
+            ))}
         </ul>
       )}
     </div>

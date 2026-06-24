@@ -1,4 +1,7 @@
 import { sb } from "../lib/supabase";
+import Nav from "../components/Nav";
+import Footer from "../components/Footer";
+import GlassPanel from "../components/ui/GlassPanel";
 
 export const metadata = { title: "System status" };
 export const revalidate = 300;
@@ -12,8 +15,7 @@ function daysSince(dateStr) {
 }
 
 export default async function Status() {
-  let byClass = [], headline = [], signals = [];
-  let ok = true;
+  let byClass = [], headline = [], signals = [], ok = true;
   try {
     [byClass, headline, signals] = await Promise.all([
       sb("v_asset_class_summary?select=*", { revalidate: 300 }),
@@ -36,36 +38,26 @@ export default async function Status() {
   const allGood = checks.every((c) => c.ok);
 
   return (
-    <main>
-      <header className="site-head">
-        <div className="brand"><a href="/"><span className="pulse-dot" /> MF Pulse</a></div>
-        <a className="back" href="/">← Dashboard</a>
-      </header>
-
-      <h1 className="amc-title">System status</h1>
-      <div className="amc-sub" style={{ color: allGood ? "var(--pos)" : "var(--neg)" }}>
-        {allGood ? "● All systems operational" : "● Degraded — see below"}
-      </div>
-
-      <section className="section">
-        <div className="panel" style={{ padding: "8px 14px" }}>
-          <table className="nav-table">
-            <tbody>
-              {checks.map((c) => (
-                <tr key={c.label}>
-                  <td style={{ width: 26 }}>{c.ok ? "✅" : "⚠️"}</td>
-                  <td>{c.label}</td>
-                  <td className="num dim">{c.detail}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <>
+      <Nav active="/status" />
+      <main className="container-px py-10">
+        <h1 className="text-[28px] sm:text-[34px] font-bold tracking-tightest text-ink">System status</h1>
+        <div className={`mt-2 flex items-center gap-2 text-[14px] font-medium ${allGood ? "text-pos" : "text-neg"}`}>
+          <span className="h-2 w-2 rounded-full bg-current animate-ring" />
+          {allGood ? "All systems operational" : "Degraded — see below"}
         </div>
-      </section>
 
-      <footer className="foot">
-        Flow headline month: {headline[0]?.month || "—"} · auto-refreshes every 5 min.
-      </footer>
-    </main>
+        <GlassPanel className="mt-7 divide-y divide-line px-5 sm:px-6">
+          {checks.map((c) => (
+            <div key={c.label} className="flex items-center gap-3 py-4 text-[13.5px]">
+              <span>{c.ok ? "✅" : "⚠️"}</span>
+              <span className="flex-1 text-ink">{c.label}</span>
+              <span className="tnum text-ink-muted">{c.detail}</span>
+            </div>
+          ))}
+        </GlassPanel>
+      </main>
+      <Footer note={<span>Flow headline month: {headline[0]?.month || "—"} · auto-refreshes every 5 min.</span>} />
+    </>
   );
 }
