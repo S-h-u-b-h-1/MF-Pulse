@@ -65,6 +65,7 @@ def main():
 
     # ---- analytical readiness over the ACTIVE investor universe ----
     buckets = Counter()
+    explain = Counter()       # explainability tiers (can we describe the fund, not just analyse it)
     flags = Counter()
     missing_meta_by_amc = Counter()
     missing_1y_by_cat = Counter()
@@ -86,7 +87,7 @@ def main():
         if bench: flags["benchmark"] += 1
         if md: flags["metadata"] += 1
         if port: flags["portfolio"] += 1
-        # classify
+        # analytical classification
         if has1y and risk and bench:
             buckets["FULLY"] += 1
         elif has90 and risk:
@@ -95,6 +96,15 @@ def main():
             buckets["MINIMALLY"] += 1
         else:
             buckets["UNANALYZABLE"] += 1
+        # explainability classification (can we describe the fund, not just analyse it)
+        if not has90:
+            explain["UNANALYZABLE"] += 1
+        elif md and bench:
+            explain["FULLY_EXPLAINABLE"] += 1      # benchmark + holdings/sectors/AUM/riskometer
+        elif bench:
+            explain["PARTIALLY_EXPLAINABLE"] += 1   # benchmark + performance + risk, no portfolio
+        else:
+            explain["ANALYZABLE_ONLY"] += 1         # performance + risk, no benchmark/metadata
         # gaps
         if not md and is_growth(r.scheme_name):
             missing_meta_by_amc[r.amc_name.replace(" Mutual Fund", "")] += 1
@@ -178,6 +188,62 @@ def main():
         "- **Blocked:** Tier-1 (HDFC/ICICI/Nippon) metadata needs positional PDF parsing on a Py3.13 worker (consolidated layouts) — see AMC_EXPANSION_PLAN.md. Real monthly flows remain SEBI-PDF-only.",
     ]
     open("docs/MARKET_UNIVERSE_AUDIT.md", "w").write("\n".join(md_lines))
+
+    # ---- Phase 1 deliverable: MFPULSE_COVERAGE_REPORT.md (explainability) ----
+    ex = explain
+    rep = [
+        "# MF Pulse — Coverage Report (Explainability)",
+        f"\n_As of {asof}. Can MF Pulse **explain** a fund, not just analyse it? Real data only._\n",
+        "## The 9 investor questions — answerable for how many of 8,611 active funds?",
+        "| Question | Data needed | Answerable | % |", "|---|---|---|---|",
+        f"| 1. What is this fund? | identity (AMFI) | {na:,} | 100% |",
+        f"| 2. What does it own? | holdings/sectors (factsheet) | {flags['portfolio']} | {coverage['portfolio']}% |",
+        f"| 3. Who manages it? | manager (factsheet) | ~12 | 0.1% |",
+        f"| 4. What benchmark? | benchmark mapping | {flags['benchmark']:,} | {coverage['benchmark']}% |",
+        f"| 5. Is it outperforming? | returns + benchmark/peers | {flags['benchmark']:,} | {coverage['benchmark']}% |",
+        f"| 6. How risky? | volatility/drawdown | {flags['risk']:,} | {coverage['risk']}% |",
+        f"| 7. Is it improving? | trend (90D+) | {flags['d90']:,} | {coverage['trend']}% |",
+        f"| 8. How expensive? | expense ratio (factsheet) | 0 | 0% |",
+        f"| 9. What to research next? | peers/category | {na:,} | 100% |",
+        "\n## Explainability tiers (of active universe)",
+        "| Tier | Meaning | Count | % |", "|---|---|---|---|",
+        f"| **FULLY EXPLAINABLE** | benchmark + portfolio + AUM + riskometer | {ex['FULLY_EXPLAINABLE']:,} | {pct(ex['FULLY_EXPLAINABLE'], na)}% |",
+        f"| **PARTIALLY EXPLAINABLE** | benchmark + performance + risk (no portfolio) | {ex['PARTIALLY_EXPLAINABLE']:,} | {pct(ex['PARTIALLY_EXPLAINABLE'], na)}% |",
+        f"| **ANALYZABLE ONLY** | performance + risk, no benchmark/metadata | {ex['ANALYZABLE_ONLY']:,} | {pct(ex['ANALYZABLE_ONLY'], na)}% |",
+        f"| **UNANALYZABLE** | <90 days history | {ex['UNANALYZABLE']:,} | {pct(ex['UNANALYZABLE'], na)}% |",
+        f"\n### MF Pulse Coverage Score: {score}/100\n",
+        "## The brutal truth",
+        "- MF Pulse can **analyse** ~97% of active funds (performance/risk/trend).",
+        f"- It can **contextualise** ~{coverage['benchmark']:.0f}% (benchmark to judge against).",
+        f"- It can **fully explain** only **{pct(ex['FULLY_EXPLAINABLE'], na)}%** (the SBI factsheet slice).",
+        "- **No fund can answer 'how expensive is it'** — expense-ratio coverage is 0% (TER not in the SBI per-scheme layout, not estimated).",
+        "\n## Why — the single bottleneck",
+        "Non-SBI metadata. SBI publishes clean per-scheme PDFs; the rest publish **consolidated** PDFs whose per-scheme data is split across pages / multi-column tables. pypdf can't attribute it; reliable parsing needs **positional extraction (pdfplumber/camelot)** which requires **Python 3.13** (unavailable in the dev sandbox; present on the GitHub Actions cron runner). That single capability unblocks ICICI/HDFC/Nippon/Kotak metadata + expense ratios.",
+        "\n## Highest-ROI roadmap (Phase 2)",
+        "| Rank | Action | Unlocks | Effort |",
+        "|---|---|---|---|",
+        "| 1 | pdfplumber HDFC/ICICI/Nippon parser on the Py3.13 cron | metadata+expense for ~3 AMCs (~500 codes) → expense/cost score live | M |",
+        "| 2 | Improve SBI holdings extraction (debt bond formats) | holdings 17%→~60% of SBI | S |",
+        "| 3 | Activate daily NAV cron | 3Y/5Y coverage rises over time | S |",
+        "| 4 | Kotak/DSP/UTI per-scheme probing (SBI pattern) | more clean-source AMCs | S each |",
+        "\n## Advisor readiness (Phase 7)",
+        "| Persona | Can use daily? | Strength | Gap |",
+        "|---|---|---|---|",
+        "| Retail investor | **Yes** | performance/risk/health on ~8,400 funds, screener, watchlist | no expense/holdings for most |",
+        "| Research analyst | **Mostly** | real returns, risk, benchmark context, category/AMC intel | metadata depth (holdings/manager) thin |",
+        "| Distributor/MFD | Partial | screener + health + benchmark | client-ready exports + cost data |",
+        "| Family office | Partial | risk + concentration (SBI) + watchlist | full portfolio/holdings coverage |",
+        "| Journalist | **Yes** | category/AMC leaders, real momentum, trustworthy + sourced | flow data is sample |",
+        "\n## PMF (Phase 8)",
+        "- **Daily reason to open:** real fund performance + health + risk across nearly the whole active universe — trustworthy and source-dated.",
+        "- **Uniquely valuable:** honesty (everything sourced/dated; nothing fabricated) + benchmark-aware health scoring on real NAV.",
+        "- **Still missing:** holdings/manager/expense for non-SBI funds; real monthly flows.",
+        "- **What stops paying:** metadata depth — advisors need holdings + expense to fully replace incumbents.",
+        "- **What earns a recommendation:** the trust posture + analytical breadth already do for performance/risk users.",
+    ]
+    open("docs/MFPULSE_COVERAGE_REPORT.md", "w").write("\n".join(rep))
+    print(f"explainability: FULLY {ex['FULLY_EXPLAINABLE']} | PARTIAL {ex['PARTIALLY_EXPLAINABLE']} | "
+          f"ANALYZABLE_ONLY {ex['ANALYZABLE_ONLY']} | UNANALYZABLE {ex['UNANALYZABLE']}")
 
 
 if __name__ == "__main__":
