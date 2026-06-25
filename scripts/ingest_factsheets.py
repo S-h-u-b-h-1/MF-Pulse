@@ -48,6 +48,29 @@ SBI_FUNDS = {
     "blue-chip-fund": "SBI Bluechip Fund",
     "magnum-equity-esg-fund": "SBI Magnum Equity ESG Fund",
     "nifty-index-fund": "SBI Nifty Index Fund",
+    # hybrid
+    "equity-hybrid-fund": "SBI Equity Hybrid Fund",
+    "balanced-advantage-fund": "SBI Balanced Advantage Fund",
+    "conservative-hybrid-fund": "SBI Conservative Hybrid Fund",
+    "multi-asset-allocation-fund": "SBI Multi Asset Allocation Fund",
+    "arbitrage-opportunities-fund": "SBI Arbitrage Opportunities Fund",
+    "equity-savings-fund": "SBI Equity Savings Fund",
+    # debt
+    "liquid-fund": "SBI Liquid Fund",
+    "overnight-fund": "SBI Overnight Fund",
+    "magnum-ultra-short-duration-fund": "SBI Magnum Ultra Short Duration Fund",
+    "magnum-low-duration-fund": "SBI Magnum Low Duration Fund",
+    "savings-fund": "SBI Savings Fund",
+    "magnum-medium-duration-fund": "SBI Magnum Medium Duration Fund",
+    "short-term-debt-fund": "SBI Short Term Debt Fund",
+    "corporate-bond-fund": "SBI Corporate Bond Fund",
+    "credit-risk-fund": "SBI Credit Risk Fund",
+    "banking-and-psu-fund": "SBI Banking and PSU Fund",
+    "magnum-gilt-fund": "SBI Magnum Gilt Fund",
+    "dynamic-bond-fund": "SBI Dynamic Bond Fund",
+    "magnum-constant-maturity-fund": "SBI Magnum Constant Maturity Fund",
+    "long-duration-fund": "SBI Long Duration Fund",
+    "floating-rate-debt-fund": "SBI Floating Rate Debt Fund",
 }
 CURATED = [("SBI", SBIAdapter, name, BASE + f"sbi-{slug}-factsheet-.pdf") for slug, name in SBI_FUNDS.items()]
 CURATED.append(("SBI", SBIAdapter, "SBI Contra Fund", BASE + "sbi-contra-fund-factsheet-17fae076-7a0e-4e87-b82c-ab217d24ee3a.pdf?sfvrsn=d591624_2"))

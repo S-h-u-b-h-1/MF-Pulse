@@ -7,7 +7,7 @@ _As of 2026-06-23. Computed from AMFI NAVAll, funds.json (analytical layer), met
 |---|---|
 | AMFI (NAVAll) | **14,224** |
 | MFAPI | 37,647 |
-| AMC factsheets ingested | 25 funds |
+| AMC factsheets ingested | 50 funds |
 | MF Pulse analytical store | 8,671 |
 
 - Active (NAV ≤7d): **8,611** · AMCs 51 · categories 47
@@ -17,9 +17,9 @@ _As of 2026-06-23. Computed from AMFI NAVAll, funds.json (analytical layer), met
 ## Phase 2 — Analytical readiness (of active universe)
 | Class | Count | % of active |
 |---|---|---|
-| FULLY ANALYZABLE (1Y + risk + benchmark) | 2,329 | 27.0% |
-| PARTIALLY (90D + risk) | 6,067 | 70.5% |
-| MINIMALLY (latest NAV only) | 215 | 2.5% |
+| FULLY ANALYZABLE (1Y + risk + benchmark) | 4,380 | 50.9% |
+| PARTIALLY (90D + risk) | 4,017 | 46.6% |
+| MINIMALLY (latest NAV only) | 214 | 2.5% |
 | UNANALYZABLE | 0 | 0.0% |
 
 ## Phase 3 — Coverage score
@@ -32,11 +32,11 @@ _As of 2026-06-23. Computed from AMFI NAVAll, funds.json (analytical layer), met
 | Risk-ready (vol/drawdown) | 98.3% |
 | Research-ready (1Y) | 90.1% |
 | Institutional-ready (3Y) | 72.9% |
-| Benchmark | 29.5% |
-| Metadata (factsheet) | 0.6% |
-| Portfolio (holdings/sectors) | 0.6% |
+| Benchmark | 53.0% |
+| Metadata (factsheet) | 1.8% |
+| Portfolio (holdings/sectors) | 1.8% |
 
-### **MF Pulse Coverage Score: 77.3/100**
+### **MF Pulse Coverage Score: 77.4/100**
 
 ## Phase 4 — Top gaps
 **Missing metadata — top AMCs (active Growth schemes without factsheet data):**
@@ -45,10 +45,10 @@ _As of 2026-06-23. Computed from AMFI NAVAll, funds.json (analytical layer), met
 | ICICI Prudential | 195 |
 | Kotak Mahindra | 190 |
 | Aditya Birla Sun Life | 186 |
-| SBI | 182 |
 | Nippon India | 180 |
 | HDFC | 179 |
 | Axis | 157 |
+| SBI | 151 |
 | Bandhan | 146 |
 | UTI | 139 |
 | DSP | 132 |
@@ -67,7 +67,7 @@ _As of 2026-06-23. Computed from AMFI NAVAll, funds.json (analytical layer), met
 
 ## Phase 5 — AMC integration ROI
 Ranked by active Growth schemes currently lacking metadata (largest coverage lift per integration):
-ICICI Prudential (195), Kotak Mahindra (190), Aditya Birla Sun Life (186), SBI (182), Nippon India (180), HDFC (179)
+ICICI Prudential (195), Kotak Mahindra (190), Aditya Birla Sun Life (186), Nippon India (180), HDFC (179), Axis (157)
 
 ## Phase 6 — Remediation
 - **Automatable now:** activate the daily NAV cron → accrues history so 3Y/5Y coverage rises over time; factsheet pipeline (monthly cron) expands metadata as per-AMC parsers land.

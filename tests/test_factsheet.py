@@ -13,11 +13,21 @@ def test_benchmark_standard_categories():
     assert resolve_benchmark("Large Cap")[1] is True          # marked standard
 
 
-def test_benchmark_thematic_flagged_not_forced():
-    bm, std = resolve_benchmark("Sectoral/Thematic", "ICICI Pru Technology Fund")
-    assert std is False and "varies" in bm.lower()
-    # unknown diversified default is flagged non-standard, not wrong
-    assert resolve_benchmark("Some New Category")[1] is False
+def test_benchmark_debt_and_hybrid_mapped():
+    assert resolve_benchmark("Liquid")[0] == "CRISIL Liquid Debt A-I Index"
+    assert resolve_benchmark("Overnight")[0] == "CRISIL Overnight Index"
+    assert resolve_benchmark("Corporate Bond")[0].startswith("CRISIL Corporate")
+    assert resolve_benchmark("Aggressive Hybrid")[0].startswith("CRISIL Hybrid 35+65")
+
+
+def test_benchmark_varies_and_no_equity_default_for_debt():
+    # sectoral/thematic/index/FoF have no single standard benchmark -> None (not guessed)
+    assert resolve_benchmark("Sectoral/Thematic", "ICICI Pru Technology Fund", "Equity")[0] is None
+    assert resolve_benchmark("Index", "UTI Nifty Index", "Equity")[0] is None
+    # an unknown DEBT category must NOT default to an equity benchmark
+    assert resolve_benchmark("Some Debt Thing", "", "Debt")[0] is None
+    # unknown diversified equity may fall back to NIFTY 500 TRI, flagged non-standard
+    assert resolve_benchmark("Some Equity Thing", "", "Equity") == ("NIFTY 500 TRI", False)
 
 
 def test_completeness_and_no_fabrication():

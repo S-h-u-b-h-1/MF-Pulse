@@ -160,8 +160,8 @@ def main():
         risk = risk_from_series(s)
         if risk:
             rec.update(risk)
-        if r.asset_class == "Equity":
-            bm, std = resolve_benchmark(rec["category"], name)
+        bm, std = resolve_benchmark(rec["category"], name, r.asset_class)
+        if bm:
             rec["benchmark"], rec["benchmarkStd"] = bm, std
         funds[code] = rec
 
