@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import sys
 
-from scripts import ingest_factsheets, validate_metadata
+from scripts import ingest_factsheets, validate_metadata, build_snapshots, daily_intelligence
 
 
 def coverage_summary():
@@ -36,9 +36,13 @@ def coverage_summary():
 def main():
     print(">> [1/3] Acquire + parse + ingest", file=sys.stderr)
     ingest_factsheets.main()
-    print(">> [2/3] Validate (QC report)", file=sys.stderr)
+    print(">> [2/5] Validate (QC report)", file=sys.stderr)
     validate_metadata.main()
-    print(">> [3/3] Coverage report", file=sys.stderr)
+    print(">> [3/5] Market snapshots (append-only)", file=sys.stderr)
+    build_snapshots.main()
+    print(">> [4/5] Daily what-changed intelligence", file=sys.stderr)
+    daily_intelligence.main()
+    print(">> [5/5] Coverage report", file=sys.stderr)
     coverage_summary()
     print(">> pipeline complete", file=sys.stderr)
 

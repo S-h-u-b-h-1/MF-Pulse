@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SentryInit from "./components/SentryInit";
+import PageView from "./components/PageView";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
@@ -23,7 +24,7 @@ export const viewport = { themeColor: "#080b14" };
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body><SentryInit />{children}</body>
+      <body><SentryInit /><PageView />{children}</body>
     </html>
   );
 }

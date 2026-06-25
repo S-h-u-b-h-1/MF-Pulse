@@ -12,8 +12,10 @@ flagged by source_date. Nothing is fabricated.
 from __future__ import annotations
 
 import dataclasses
+import hashlib
 import io
 import json
+import os
 import sys
 import urllib.request
 
@@ -101,18 +103,21 @@ def pdf_text(b: bytes) -> str:
 
 def main():
     dim = list(parse_file("data/NAVAll.txt"))   # materialize — it's a generator, reused per fund
-    rows, audit = [], []
+    rows, audit, src_files = [], [], []
     seen = set()
 
     for amc, AdapterCls, fund_base, url in CURATED:
         rec = {"amc": amc, "fund": fund_base, "url": url, "status": "ok", "codes": 0}
         try:
-            text = pdf_text(fetch(url))
-            m = AdapterCls().parse_scheme_block(text)
+            pdf = fetch(url)
+            m = AdapterCls().parse_scheme_block(pdf_text(pdf))
         except Exception as e:  # noqa: BLE001
             rec.update(status="failed", error=str(e)[:80])
             audit.append(rec)
             continue
+        src_files.append({"source": f"{amc} factsheet PDF", "source_url": url, "amc": amc,
+                          "scheme_hint": fund_base, "sha256": hashlib.sha256(pdf).hexdigest(),
+                          "byte_size": len(pdf), "source_date": m.source_date})
         m.source = f"{amc} factsheet PDF"
         m.source_url = url
 
@@ -145,6 +150,10 @@ def main():
     }
     with open("frontend/app/data/metadata.json", "w") as fh:
         json.dump(out, fh, separators=(",", ":"))
+    os.makedirs("data/warehouse", exist_ok=True)
+    with open("data/warehouse/source_files.jsonl", "a") as fh:   # append-only lineage + checksum
+        for s in src_files:
+            fh.write(json.dumps(s) + "\n")
     print(f"-- ingested {len(rows)} scheme rows from {sum(1 for a in audit if a['status']=='ok')} factsheets", file=sys.stderr)
     for a in audit:
         print(f"   {a['fund']:28} {a['status']:7} codes={a.get('codes',0)} src={a.get('source_date','-')}", file=sys.stderr)
