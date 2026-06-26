@@ -22,6 +22,8 @@ jobs:
           curl -sL "https://portal.amfiindia.com/spages/NAVAll.txt" -o data/NAVAll.txt || true
       - name: Run factsheet pipeline
         run: python -m scripts.factsheet_pipeline
+      - name: Data-quality + score gate (fail build if quality drops)
+        run: pip install -q pytest && python -m pytest tests/test_data_quality.py tests/test_scores.py -q
       - name: Commit refreshed metadata + reports
         run: |
           git config user.name "mfpulse-bot"

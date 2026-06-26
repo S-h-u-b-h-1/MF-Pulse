@@ -163,6 +163,21 @@ def main():
         bm, std = resolve_benchmark(rec["category"], name, r.asset_class)
         if bm:
             rec["benchmark"], rec["benchmarkStd"] = bm, std
+        # Suppress NAV artifacts (stock splits / payouts / discontinued-plan resets): a return
+        # outside a sane band per window is a data discontinuity, not real performance.
+        BANDS = {"r1d": (-20, 20), "r1w": (-35, 45), "r1m": (-55, 120), "r3m": (-65, 180),
+                 "r6m": (-75, 250), "r1y": (-85, 400), "r3y": (-90, 2000), "r5y": (-95, 4000)}
+        for k, (lo, hi) in BANDS.items():
+            if rec.get(k) is not None and not (lo <= rec[k] <= hi):
+                rec[k] = None
+        if idcw:
+            # IDCW plans pay out distributions → NAV drops on payout, so NAV-only returns and
+            # risk metrics are distorted and not defensible. Suppress rather than display them.
+            for k in ("r1d", "r1w", "r1m", "r3m", "r6m", "r1y", "r3y", "r5y"):
+                rec[k] = None
+            for k in ("vol30", "vol90", "dvol90", "maxdd90", "negDays", "consistency",
+                      "mom7", "mom30", "mom90", "recentHigh", "recentLow", "ddFromHigh", "obs"):
+                rec.pop(k, None)
         funds[code] = rec
 
     # category rank/percentile in (category, plan) equity-growth cohorts

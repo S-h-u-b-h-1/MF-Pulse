@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import sys
 
-from scripts import ingest_factsheets, validate_metadata, build_snapshots, daily_intelligence, build_daily, canonical
+from scripts import ingest_factsheets, validate_metadata, build_snapshots, daily_intelligence, build_daily, canonical, trust_audit
 
 
 def coverage_summary():
@@ -44,8 +44,9 @@ def main():
     print(">> [4/5] Daily what-changed intelligence", file=sys.stderr)
     daily_intelligence.main()
     build_daily.main()
-    print(">> [5/5] Coverage report", file=sys.stderr)
+    print(">> [5/5] Coverage + trust audit", file=sys.stderr)
     coverage_summary()
+    trust_audit.main()
     print(">> pipeline complete", file=sys.stderr)
 
 
